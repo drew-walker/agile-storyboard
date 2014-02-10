@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="storyboard.css" />
+</head>
+<body ng-app="StoryboardApp">
+    <div class="container">
+        <div class="container-fluid" ng-controller="StoryboardCtrl">
+            <div class="row">
+                <div droppable class="col-md-3" ng-repeat="column in columns">
+                    <h3 ng-model="column.name" contenteditable="true">{{column.name}}</h3>
+                    <div draggable ng-repeat="story in column.stories" class="bs-callout">
+                        <h4>{{story.title}}</h4>
+                        <p>{{story.description}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="bower_components/modernizr/modernizr.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript">
+        if (Modernizr.draganddrop) {
+            //alert('test');
+        }
+
+        var mockColumns = [
+            { name : 'Backlog',
+                stories : [
+                    { title : 'Drew Story 1', description: 'This is a summary description of the story' },
+                    { title : 'Drew Story 5', description: 'This is a summary description of the story This is a summary description of the story This is a summary description of the story' }
+                ]
+            },
+            { name : 'In Design',
+                stories : [
+                    { title : 'Drew Story 2', description: 'This is a summary description of the story' }
+                ]
+            },
+            { name : 'In Development',
+                stories : [
+                    { title : 'Drew Story 3', description: 'This is a summary description of the story' }
+                ]
+            },
+            { name : 'Ready for Test',
+                stories : [
+                    { title : 'Drew Story 4', description: 'This is a summary description of the story' }
+                ]
+            }
+        ];
+
+        angular.module('StoryboardApp', ['StoryboardModule']);
+
+        angular.module('StoryboardModule', []);
+
+        angular.module('StoryboardModule').controller('StoryboardCtrl', function($scope) {
+            //$scope.stories = mockStories;
+            $scope.columns = mockColumns;
+
+            $scope.editColumn = function() {
+                alert('test');
+            }
+        });
+
+        angular.module('StoryboardModule').directive('contenteditable', function() {
+            return {
+                require: 'ngModel',
+                link: function(scope, elm, attrs, ctrl) {
+                    elm.bind('blur', function() {
+                        scope.$apply(function() {
+                            ctrl.$setViewValue(elm.html());
+                        });
+                    });
+
+                    ctrl.$render = function() {
+                        elm.html(ctrl.$viewValue);
+                    };
+
+                    //ctrl.$setViewValue(elm.html());
+                }
+            };
+        });
+
+        angular.module('StoryboardModule').directive('draggable', function() {
+            return {
+                link: function(scope, element, attributes, controller) {
+                    element.attr('draggable', 'true');
+
+                    element.bind('dragstart', function(e) {
+                        e.srcElement.style.opacity = 0.6;
+                        console.log('started dragging');
+                    });
+
+                    element.bind('dragend', function(e) {
+                        e.srcElement.style.opacity = 1.0;
+                        console.log('stopped dragging');
+                    });
+//                    elm.html('test');
+                }
+            }
+        });
+
+        angular.module('StoryboardModule').directive('droppable', function() {
+            return {
+                link: function(scope, element, attributes, controller) {
+
+                    element.bind('dragover', function(event) {
+                        this.classList.add('over');
+                    });
+
+                    element.bind('dragleave', function(event) {
+                        this.classList.remove('over');
+                    });
+//                    elm.html('test');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
