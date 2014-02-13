@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <div class="row">
+        <div droppable class="col-md-3" ng-repeat="column in columns">
+            <h3 ng-model="column.name">{{column.name}}</h3>
+            <div draggable ng-repeat="story in column.stories" class="bs-callout">
+                <h4>{{story.title}}</h4>
+                <p>{{story.description}}</p>
+            </div>
+        </div>
+    </div>
+</div>
