@@ -1,10 +1,18 @@
 <div class="container-fluid">
     <div class="row">
-        <div droppable class="col-md-3" ng-repeat="column in columns">
-            <h3 ng-model="column.name">{{column.name}}</h3>
-            <div draggable ng-repeat="story in column.stories" class="bs-callout">
-                <h4>{{story.title}}</h4>
-                <p>{{story.description}}</p>
+        <div class="col-md-{{columnWidth}}" ng-repeat="(columnKey, column) in columns">
+            <p ng-model="column.name"><strong>{{column.name}}</strong> <small ng-click="deleteColumn(columnKey)"><a href="" class="glyphicon glyphicon-trash"></a></small></p>
+            <div ui-sortable="sortableOptions" class="card_container" ng-model="column.stories">
+                <div class="card" ng-repeat="(storyKey, story) in column.stories | orderByPriority">
+                    <div class="bs-callout">
+                        <strong>{{story.summary}}</strong>
+                        <p><small><em>{{story.description}}</em></small></p>
+                        <div class="btn-group btn-group-xs">
+                            <button class="btn btn-danger btn-xs" ng-click="deleteStory(columnKey, story.$id)"><span class="glyphicon glyphicon-trash"></span></button>
+                            <button class="btn btn-primary btn-xs" ng-click="progressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-right"></span></button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

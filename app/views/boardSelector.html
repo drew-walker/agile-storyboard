@@ -1,0 +1,3 @@
+<select ng-model="selectedBoardName" ng-change="changeBoard(selectedBoard)" class="form-control input-sm">
+    <option ng-repeat="(key, board) in boards" value="{{key}}">{{board.name}}</option>
+</select>

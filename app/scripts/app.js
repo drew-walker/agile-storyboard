@@ -1,1 +1,1 @@
-angular.module('storyboardModule', ['firebase']);
+angular.module('storyboardModule', ['firebase', 'ui.sortable', 'ui.bootstrap']);

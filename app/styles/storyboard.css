@@ -1,3 +1,23 @@
+/*.card_container {*/
+    /*perspective: 1000;*/
+/*}*/
+/*.card {*/
+    /*transform-style: preserve-3d;*/
+    /*transition: all 0.5s linear;*/
+/*}*/
+
+/*.card:hover {*/
+    /*transform: rotateY(180deg);*/
+/*}*/
+
+/*.face {*/
+    /*backface-visibility:hidden;*/
+/*}*/
+
+/*.face.back {*/
+    /*transform: rotateY(180deg);*/
+/*}*/
+
 .bs-callout {
     margin: 20px 0;
     padding: 20px;

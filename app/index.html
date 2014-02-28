@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="storyboardModule">
 <head>
     <title></title>
     <!-- build:css styles/vendor.css -->
@@ -11,13 +11,52 @@
     <link rel="stylesheet" href="styles/storyboard.css" />
     <!-- endbuild -->
 </head>
-<body ng-app="agileApp">
-    <div class="container">
-        <board></board>
+<body ng-controller="BoardCtrl">
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <div style="padding:0 15px" ng-controller="LoginCtrl">
+            <a class="navbar-brand" href="#">GetAgile</a>
+            <div class="pull-right" ng-show="auth.user" style="margin-left:15px">
+                <img ng-src="http://graph.facebook.com/{{auth.user.username}}/picture" />
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-show="auth.user">
+                    <a class="dropdown-toggle" data-toggle="dropdown">{{auth.user.name}} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li ng-show="auth.user"><a ng-click="auth.$logout()">Logout</a></li>
+                    </ul>
+                </li>
+                <li ng-hide="auth.user"><a ng-click="auth.$login('facebook')">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div style="padding:0 15px;">
+        <div class="row">
+            <div class="col-sm-6">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <board-selector></board-selector>
+                    </div>
+                    <div class="btn-group btn-group-xs">
+                        <button type="submit" class="btn btn-primary" ng-click="showNewStoryboardUI()"><span class="glyphicon glyphicon-plus"></span> New Storyboard</button>
+                        <button ng-show="selectedBoard" class="btn btn-danger" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-plus"></span> Delete</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-6">
+                <div class="btn-group btn-group-xs pull-right">
+                    <button ng-show="selectedBoard" class="btn btn-default" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
+                    <button ng-show="selectedBoard" class="btn btn-primary" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <board></board>
+            </div>
+        </div>
     </div>
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/modernizr/modernizr.js"></script>
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -26,18 +65,28 @@
     <script src="bower_components/firebase-simple-login/firebase-simple-login.js"></script>
     <script src="bower_components/angularfire/angularfire.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="bower_components/angular-ui-sortable/sortable.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-    <script>
-        angular.module('agileApp', ['storyboardModule']);
-    </script>
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/boards.js"></script>
+    <script src="scripts/views/templates.js"></script>
     <script src="scripts/controllers/board.js"></script>
     <script src="scripts/directives/draggable.js"></script>
     <script src="scripts/directives/droppable.js"></script>
-    <script src="scripts/directives/storyboard.js"></script>
+    <script src="scripts/directives/board.js"></script>
+    <script src="scripts/directives/boardSelector.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/directives/loginBox.js"></script>
+    <script src="scripts/services/BoardService.js"></script>
+    <script src="scripts/services/ColumnService.js"></script>
+    <script src="scripts/services/StoryService.js"></script>
+    <script src="scripts/controllers/AddStoryboard.js"></script>
+    <script src="scripts/controllers/AddColumn.js"></script>
+    <script src="scripts/controllers/AddStory.js"></script>
     <!-- endbuild -->
 </body>
 </html>

@@ -4,6 +4,7 @@ angular.module('storyboardModule')
     .directive('draggable', function () {
         return {
             restrict: 'A',
+            scope: { onMove: '&' },
             link: function postLink(scope, element) {
                 element.attr('draggable', 'true');
 
@@ -12,7 +13,7 @@ angular.module('storyboardModule')
                 });
 
                 element.bind('dragend', function() {
-                    console.log('stopped dragging');
+                    scope.onMove();
                 });
             }
         };

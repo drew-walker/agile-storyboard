@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: storyboard', function () {
+describe('Directive: boardSelector', function () {
 
   // load the directive's module
   beforeEach(module('storyboardModule'));
@@ -13,7 +13,7 @@ describe('Directive: storyboard', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<storyboard></storyboard>');
+    element = angular.element('<board-selector></board-selector>');
     element = $compile(element)(scope);
     expect(true).toBe(true);
   }));

@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: storyboard', function () {
+describe('Directive: loginBox', function () {
 
   // load the directive's module
   beforeEach(module('storyboardModule'));
@@ -13,8 +13,8 @@ describe('Directive: storyboard', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<storyboard></storyboard>');
+    element = angular.element('<login-box></login-box>');
     element = $compile(element)(scope);
-    expect(true).toBe(true);
+    expect(element.text()).toBe('this is the loginBox directive');
   }));
 });

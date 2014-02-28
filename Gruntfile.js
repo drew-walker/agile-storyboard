@@ -15,7 +15,14 @@ module.exports = function (grunt) {
         watch: {
             js: {
                 files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-                tasks: ['newer:jshint:all'],
+                tasks: [], //'newer:jshint:all'
+                options: {
+                    livereload: true
+                }
+            },
+            html: {
+                files: ['<%= yeoman.app %>/views/{,*}*.html'],
+                tasks: ['ngtemplates'],
                 options: {
                     livereload: true
                 }
@@ -258,6 +265,14 @@ module.exports = function (grunt) {
                 configFile: 'karma.conf.js',
                 singleRun: true
             }
+        },
+
+        ngtemplates: {
+            storyboardModule: {
+                cwd: '<%= yeoman.app %>',
+                src: 'views/**/*.html',
+                dest: '<%= yeoman.app %>/scripts/views/templates.js'
+            }
         }
     });
 
@@ -290,6 +305,7 @@ module.exports = function (grunt) {
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
+        'ngtemplates',
         'concat',
         'ngmin',
         'copy:dist',
@@ -305,4 +321,5 @@ module.exports = function (grunt) {
         'test',
         'build'
     ]);
+
 };
