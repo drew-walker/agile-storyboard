@@ -1,12 +1,32 @@
 'use strict';
 
 module.exports = function (grunt) {
+    grunt.loadNpmTasks('grunt-build-control');
 
     require('load-grunt-tasks')(grunt);
 
     require('time-grunt')(grunt);
 
+    var pkg = require('./package.json');
+
     grunt.initConfig({
+
+        buildcontrol: {
+            options: {
+                dir: 'dist',
+                commit: true,
+                push: true,
+                message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+            },
+            heroku: {
+                options: {
+                    remote: 'git@heroku.com:getagile.git',
+                    branch: 'master',
+                    tag: pkg.version
+                }
+            }
+        },
+
         yeoman: {
             app: require('./bower.json').appPath || 'app',
             dist: 'dist'
