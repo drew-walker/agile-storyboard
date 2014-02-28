@@ -11,7 +11,7 @@ app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');
 });
 
-//app.use("/fonts", gzippo.staticGzip(__dirname + '/fonts'));
+app.use("/fonts", gzippo.staticGzip(__dirname + '/fonts'));
 //app.use("/images", gzippo.staticGzip(__dirname + '/images'));
 app.use("/scripts", gzippo.staticGzip(__dirname + '/scripts'));
 app.use("/styles", gzippo.staticGzip(__dirname + '/styles'));
