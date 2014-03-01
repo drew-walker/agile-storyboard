@@ -79,14 +79,13 @@ angular.module('storyboardModule').run(['$templateCache', function($templateCach
     "        <div class=\"col-md-{{columnWidth}}\" ng-repeat=\"(columnKey, column) in columns\">\n" +
     "            <p ng-model=\"column.name\"><strong>{{column.name}}</strong> <small ng-click=\"deleteColumn(columnKey)\"><a href=\"\" class=\"glyphicon glyphicon-trash\"></a></small></p>\n" +
     "            <div ui-sortable=\"sortableOptions\" class=\"card_container\" ng-model=\"column.stories\">\n" +
-    "                <div class=\"card\" ng-repeat=\"(storyKey, story) in column.stories | orderByPriority\">\n" +
-    "                    <div class=\"bs-callout\">\n" +
+    "                <div class=\"card\" ng-repeat=\"(storyKey, story) in column.stories | orderByPriority\" ng-mouseover=\"story.isCurrentFocus = true\" ng-mouseout=\"story.isCurrentFocus = false\">\n" +
+    "\n" +
+    "                    <div class=\"bs-callout\" ng-class=\"{ 'bs-callout-warning' : story.isCurrentFocus }\">\n" +
+    "                        <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"story.isCurrentFocus\" ng-click=\"deleteStory(columnKey, story.$id)\">&times;</button>\n" +
     "                        <strong>{{story.summary}}</strong>\n" +
     "                        <p><small><em>{{story.description}}</em></small></p>\n" +
-    "                        <div class=\"btn-group btn-group-xs\">\n" +
-    "                            <button class=\"btn btn-danger btn-xs\" ng-click=\"deleteStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-trash\"></span></button>\n" +
-    "                            <button class=\"btn btn-primary btn-xs\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></button>\n" +
-    "                        </div>\n" +
+    "                        <button class=\"btn btn-primary btn-xs\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></button>\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
@@ -97,7 +96,7 @@ angular.module('storyboardModule').run(['$templateCache', function($templateCach
 
 
   $templateCache.put('views/boardSelector.html',
-    "<select ng-model=\"selectedBoardName\" ng-change=\"changeBoard(selectedBoard)\" class=\"form-control input-sm\">\n" +
+    "<select ng-model=\"selectedBoardName\" class=\"form-control input-sm\">\n" +
     "    <option ng-repeat=\"(key, board) in boards\" value=\"{{key}}\">{{board.name}}</option>\n" +
     "</select>"
   );
@@ -108,6 +107,11 @@ angular.module('storyboardModule').run(['$templateCache', function($templateCach
     "    <li ng-repeat=\"board in boards\"><a ng-href=\"#/boards/{{$index}}\">{{board.name}}</a></li>\n" +
     "</ul>\n" +
     "\n"
+  );
+
+
+  $templateCache.put('views/dashboard.html',
+    "<p>This is the dashboard view.</p>\n"
   );
 
 }]);

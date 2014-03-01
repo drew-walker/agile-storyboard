@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('storyboardModule')
-    .controller('BoardCtrl', function ($scope, $modal, BoardService, ColumnService, StoryService) {
+    .controller('BoardCtrl', function ($scope, $modal, BoardService, ColumnService, StoryService, $routeParams) {
         $scope.boards = BoardService.getBoards();
-        $scope.selectedBoardName = '';
 
         $scope.init = function() {
             $scope.numberOfColumns = 0;
@@ -77,7 +76,7 @@ angular.module('storyboardModule')
         };
 
         $scope.boards.$on("loaded", function(boards) {
-            $scope.selectedBoardName = Object.keys(boards)[0];
+            $scope.selectedBoardName = $routeParams.boardId;
         });
 
         $scope.$watch('selectedBoardName', function(newVal) {

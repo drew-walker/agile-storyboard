@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="storyboardModule">
 <head>
-    <title></title>
+    <title>GetAgile - A free, online agile storyboard.</title>
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
@@ -14,44 +14,41 @@
 <body ng-controller="BoardCtrl">
     <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
         <div style="padding:0 15px" ng-controller="LoginCtrl">
-            <a class="navbar-brand" href="#">GetAgile</a>
+            <a class="navbar-brand" href="/">GetAgile</a>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">{{selectedBoard.name}} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{key}}">{{board.name}}</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li ng-class="{ 'disabled' : !auth.user }"><a href="" ng-click="showNewStoryboardUI()">Add New Storyboard</a></li>
+                    </ul>
+                </li>
+                <li><a href="#/dashboard">Dashboard</a></li>
+            </ul>
+            <button ng-show="selectedBoard" class="btn btn-danger navbar-btn" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-plus"></span> Delete</button>
             <div class="pull-right" ng-show="auth.user" style="margin-left:15px">
                 <img ng-src="http://graph.facebook.com/{{auth.user.username}}/picture" />
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li ng-show="auth.user">
-                    <a class="dropdown-toggle" data-toggle="dropdown">{{auth.user.name}} <b class="caret"></b></a>
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">{{auth.user.name}} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li ng-show="auth.user"><a ng-click="auth.$logout()">Logout</a></li>
+                        <li ng-show="auth.user"><a href="" ng-click="auth.$logout()">Logout</a></li>
                     </ul>
                 </li>
-                <li ng-hide="auth.user"><a ng-click="auth.$login('facebook')">Login</a></li>
+                <li ng-hide="auth.user"><a href="" ng-click="auth.$login('facebook')">Login</a></li>
             </ul>
+            <div class="btn-group pull-right" ng-show="auth.user">
+                <button ng-show="selectedBoard" class="btn btn-default navbar-btn" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
+                <button ng-show="selectedBoard" class="btn btn-primary navbar-btn" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
+            </div>
         </div>
     </nav>
     <div style="padding:0 15px;">
         <div class="row">
-            <div class="col-sm-6">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <board-selector></board-selector>
-                    </div>
-                    <div class="btn-group btn-group-xs">
-                        <button type="submit" class="btn btn-primary" ng-click="showNewStoryboardUI()"><span class="glyphicon glyphicon-plus"></span> New Storyboard</button>
-                        <button ng-show="selectedBoard" class="btn btn-danger" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-plus"></span> Delete</button>
-                    </div>
-                </form>
-            </div>
-            <div class="col-sm-6">
-                <div class="btn-group btn-group-xs pull-right">
-                    <button ng-show="selectedBoard" class="btn btn-default" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
-                    <button ng-show="selectedBoard" class="btn btn-primary" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-sm-12">
-                <board></board>
+                <div ng-view></div>
             </div>
         </div>
     </div>
@@ -59,12 +56,12 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angular-mocks/angular-mocks.js"></script>
     <script src="bower_components/firebase-simple-login/firebase-simple-login.js"></script>
     <script src="bower_components/angularfire/angularfire.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -86,6 +83,7 @@
     <script src="scripts/controllers/AddStoryboard.js"></script>
     <script src="scripts/controllers/AddColumn.js"></script>
     <script src="scripts/controllers/AddStory.js"></script>
+    <script src="scripts/controllers/dashboard.js"></script>
     <!-- endbuild -->
 </body>
 </html>
