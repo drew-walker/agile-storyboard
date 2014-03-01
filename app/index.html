@@ -14,7 +14,7 @@
 <body ng-controller="BoardCtrl">
     <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
         <div style="padding:0 15px" ng-controller="LoginCtrl">
-            <a class="navbar-brand" href="/">GetAgile</a>
+            <a class="navbar-brand" href="#/release-notes">GetAgile - 0.1 ALPHA</a>
             <ul class="nav navbar-nav">
                 <li>
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">{{selectedBoard.name}} <b class="caret"></b></a>
@@ -26,7 +26,7 @@
                 </li>
                 <li><a href="#/dashboard">Dashboard</a></li>
             </ul>
-            <button ng-show="selectedBoard" class="btn btn-danger navbar-btn" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-plus"></span> Delete</button>
+            <!--<button ng-show="selectedBoard" class="btn btn-danger navbar-btn" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-plus"></span> Delete</button>-->
             <div class="pull-right" ng-show="auth.user" style="margin-left:15px">
                 <img ng-src="http://graph.facebook.com/{{auth.user.username}}/picture" />
             </div>
@@ -84,6 +84,7 @@
     <script src="scripts/controllers/AddColumn.js"></script>
     <script src="scripts/controllers/AddStory.js"></script>
     <script src="scripts/controllers/dashboard.js"></script>
+    <script src="scripts/controllers/release-notes.js"></script>
     <!-- endbuild -->
 </body>
 </html>

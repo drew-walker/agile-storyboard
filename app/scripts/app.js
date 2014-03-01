@@ -1,5 +1,6 @@
 
 
+
 angular.module('storyboardModule', ['firebase', 'ui.sortable', 'ui.bootstrap', 'ngRoute'])
     .config(function($routeProvider) {
         $routeProvider.when('/boards/:boardId', {
@@ -8,5 +9,9 @@ angular.module('storyboardModule', ['firebase', 'ui.sortable', 'ui.bootstrap', '
         }).when('/dashboard', {
             templateUrl: 'views/dashboard.html',
             controller: 'DashboardCtrl'
+        }).when('/release-notes', {
+            templateUrl: 'views/release-notes.html',
+            controller: 'ReleaseNotesCtrl'
         })
+
     });

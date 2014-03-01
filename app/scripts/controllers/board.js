@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storyboardModule')
-    .controller('BoardCtrl', function ($scope, $modal, BoardService, ColumnService, StoryService, $routeParams) {
+    .controller('BoardCtrl', function ($scope, $modal, BoardService, ColumnService, StoryService, $routeParams, $firebase, $filter) {
         $scope.boards = BoardService.getBoards();
 
         $scope.init = function() {
@@ -56,23 +56,18 @@ angular.module('storyboardModule')
             }
         };
 
-        $scope.sortableOptions = {
-//            stop: function(e, ui) {
-//                var len = $scope.columns[0].stories.length;
-//                angular.forEach($scope.columns[0].stories, function(value, index) {
-//                    console.log(value.name + ': setPriority ' + index);
-//                    //ref.child(value.$id).setPriority(index);
-//                });
-//            },
-//            axis: 'y'
-        };
-
         $scope.updateColumnWidth = function(numberOfColumns) {
             $scope.columnWidth = Math.floor(12 / numberOfColumns);
         };
 
         $scope.loadStories = function(columnId) {
-            $scope.columns[columnId].stories = StoryService.getStories(columnId);
+            var tempStories = StoryService.getStories(columnId);
+            tempStories.$on('loaded', function() {
+                var storiesArray = $filter('orderByPriority')(tempStories);
+                if (storiesArray.length > 0) {
+                    $scope.columns[columnId].stories = storiesArray;
+                };
+            });
         };
 
         $scope.boards.$on("loaded", function(boards) {
@@ -97,6 +92,22 @@ angular.module('storyboardModule')
 
         $scope.progressStory = function(columnId, storyId) {
             StoryService.progressStory($scope.selectedBoardName, columnId, storyId);
+        };
+
+
+
+        $scope.backlogColumnRef = new Firebase("https://getagile.firebaseio.com/stories/-JGrxUItE1N7iP7vjfUH");
+        $scope.backlogStories = $firebase($scope.backlogColumnRef);
+
+        $scope.sortableOptions = {
+            stop: function(e, ui) {
+                angular.forEach($scope.columns, function(column, index) {
+                    angular.forEach(column.stories, function(story, index) {
+                        $scope.backlogColumnRef.child(story.$id).setPriority(index);
+                    });
+                });
+            },
+            axis: 'y'
         };
 
         $scope.init();
