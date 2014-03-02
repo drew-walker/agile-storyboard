@@ -82,19 +82,17 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
   $templateCache.put('views/board.html',
     "<div class=\"container-fluid\">\n" +
     "    <div class=\"row\">\n" +
-    "        <div class=\"col-sm-6\">\n" +
-    "            <form role=\"form\" class=\"form-inline\" ng-show=\"(stories | orderByPriority).length > 2\">\n" +
-    "                <div class=\"form-group has-feedback\">\n" +
+    "        <div class=\"col-xs-12\">\n" +
+    "            <form class=\"form-inline pull-right\">\n" +
+    "                <div class=\"form-group has-feedback\" ng-show=\"(stories | orderByPriority).length > 2\">\n" +
     "                    <input ng-model=\"searchFilter\" class=\"form-control\" placeholder=\"Filter\" />\n" +
     "                    <span class=\"glyphicon glyphicon-remove form-control-feedback\" ng-show=\"searchFilter\" ng-click=\"searchFilter=''\"></span>\n" +
     "                </div>\n" +
+    "                <div class=\"btn-group\">\n" +
+    "                    <button ng-show=\"selectedBoard\" class=\"btn btn-default navbar-btn\" ng-click=\"showNewColumnUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Column</button>\n" +
+    "                    <button ng-show=\"selectedBoard\" class=\"btn btn-primary navbar-btn\" ng-click=\"showNewStoryUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Story</button>\n" +
+    "                </div>\n" +
     "            </form>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-sm-6\">\n" +
-    "            <div class=\"btn-group pull-right\" ng-cloak>\n" +
-    "                <button ng-show=\"selectedBoard\" class=\"btn btn-default navbar-btn\" ng-click=\"showNewColumnUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Column</button>\n" +
-    "                <button ng-show=\"selectedBoard\" class=\"btn btn-primary navbar-btn\" ng-click=\"showNewStoryUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Story</button>\n" +
-    "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "    <div class=\"row\">\n" +

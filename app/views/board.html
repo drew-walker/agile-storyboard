@@ -1,18 +1,16 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-6">
-            <form role="form" class="form-inline" ng-show="(stories | orderByPriority).length > 2">
-                <div class="form-group has-feedback">
+        <div class="col-xs-12">
+            <form class="form-inline pull-right">
+                <div class="form-group has-feedback" ng-show="(stories | orderByPriority).length > 2">
                     <input ng-model="searchFilter" class="form-control" placeholder="Filter" />
                     <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="searchFilter" ng-click="searchFilter=''"></span>
                 </div>
+                <div class="btn-group">
+                    <button ng-show="selectedBoard" class="btn btn-default navbar-btn" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
+                    <button ng-show="selectedBoard" class="btn btn-primary navbar-btn" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
+                </div>
             </form>
-        </div>
-        <div class="col-sm-6">
-            <div class="btn-group pull-right" ng-cloak>
-                <button ng-show="selectedBoard" class="btn btn-default navbar-btn" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
-                <button ng-show="selectedBoard" class="btn btn-primary navbar-btn" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
-            </div>
         </div>
     </div>
     <div class="row">
