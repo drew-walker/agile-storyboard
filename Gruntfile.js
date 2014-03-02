@@ -300,7 +300,7 @@ module.exports = function (grunt) {
         },
 
         ngtemplates: {
-            storyboardModule: {
+            getAgileApp: {
                 cwd: '<%= yeoman.app %>',
                 src: 'views/**/*.html',
                 dest: '<%= yeoman.app %>/scripts/views/templates.js'

@@ -3,7 +3,7 @@
 describe('Controller: BoardCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('storyboardModule'));
+  beforeEach(module('getAgileApp'));
 
   var StoryboardCtrl,
       scope,

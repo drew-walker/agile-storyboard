@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('storyboardModule')
+angular.module('getAgileApp')
     .directive('boardSelector', function () {
         return {
             templateUrl: 'views/boardSelector.html',

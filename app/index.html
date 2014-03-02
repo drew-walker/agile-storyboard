@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="storyboardModule">
+<html ng-app="getAgileApp">
 <head>
     <title>GetAgile - A free, online agile storyboard.</title>
     <!-- build:css styles/vendor.css -->
@@ -11,26 +11,26 @@
     <link rel="stylesheet" href="styles/storyboard.css" />
     <!-- endbuild -->
 </head>
-<body ng-controller="BoardCtrl">
+<body>
     <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
         <div style="padding:0 15px" ng-controller="LoginCtrl">
             <a class="navbar-brand" href="#/release-notes">GetAgile - 0.1 ALPHA</a>
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">{{selectedBoard.name}} <b class="caret"></b></a>
+                    <a href="" ng-cloak class="dropdown-toggle" data-toggle="dropdown">{{selectedBoard.name}} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{key}}">{{board.name}}</a></li>
+                        <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{key}}"><span ng-show="key==selectedBoardId" class="glyphicon glyphicon-ok"></span> {{board.name}}</a></li>
                         <li role="presentation" class="divider"></li>
                         <li ng-class="{ 'disabled' : !auth.user }"><a href="" ng-click="showNewStoryboardUI()">Add New Storyboard</a></li>
                     </ul>
                 </li>
-                <li><a href="#/dashboard">Dashboard</a></li>
+                <!--<li><a href="#/dashboard">Dashboard</a></li>-->
             </ul>
-            <!--<button ng-show="selectedBoard" class="btn btn-danger navbar-btn" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-plus"></span> Delete</button>-->
+            <button ng-show="selectedBoard && auth.user" class="btn btn-danger navbar-btn" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
             <div class="pull-right" ng-show="auth.user" style="margin-left:15px">
                 <img ng-src="http://graph.facebook.com/{{auth.user.username}}/picture" />
             </div>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" ng-cloak>
                 <li ng-show="auth.user">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">{{auth.user.name}} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -39,7 +39,7 @@
                 </li>
                 <li ng-hide="auth.user"><a href="" ng-click="auth.$login('facebook')">Login</a></li>
             </ul>
-            <div class="btn-group pull-right" ng-show="auth.user">
+            <div class="btn-group pull-right" ng-show="auth.user" ng-cloak>
                 <button ng-show="selectedBoard" class="btn btn-default navbar-btn" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
                 <button ng-show="selectedBoard" class="btn btn-primary navbar-btn" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
             </div>
@@ -69,6 +69,7 @@
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
+    <script src="scripts/config.js"></script>
     <script src="scripts/views/templates.js"></script>
     <script src="scripts/controllers/board.js"></script>
     <script src="scripts/directives/draggable.js"></script>
@@ -85,6 +86,7 @@
     <script src="scripts/controllers/AddStory.js"></script>
     <script src="scripts/controllers/dashboard.js"></script>
     <script src="scripts/controllers/release-notes.js"></script>
+    <script src="scripts/services/firebase.js"></script>
     <!-- endbuild -->
 </body>
 </html>

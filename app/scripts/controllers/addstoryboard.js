@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('storyboardModule')
+angular.module('getAgileApp')
     .controller('AddStoryboardCtrl', function($scope, $modalInstance, BoardService) {
         $scope.newStoryboard = {};
 

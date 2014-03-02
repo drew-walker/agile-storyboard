@@ -1,4 +1,4 @@
-angular.module('storyboardModule').run(['$templateCache', function($templateCache) {
+angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('views/addNewColumn.html',
@@ -84,11 +84,11 @@ angular.module('storyboardModule').run(['$templateCache', function($templateCach
     "    <div class=\"row\">\n" +
     "        <div class=\"col-md-{{columnWidth}}\" ng-repeat=\"(columnKey, column) in columns\">\n" +
     "            <p ng-model=\"column.name\"><strong>{{column.name}}</strong> <small ng-click=\"deleteColumn(columnKey)\"><a href=\"\" class=\"glyphicon glyphicon-trash\"></a></small></p>\n" +
-    "            <div ui-sortable=\"sortableOptions\" class=\"card_container\" ng-model=\"column.stories\">\n" +
-    "                <div class=\"card\" ng-repeat=\"(storyKey, story) in column.stories | orderByPriority\" ng-mouseover=\"story.isCurrentFocus = true\" ng-mouseout=\"story.isCurrentFocus = false\">\n" +
+    "            <div ui-sortable=\"sortableOptions\" class=\"card_container\" ng-model=\"stories\">\n" +
+    "                <div class=\"card\" ng-repeat=\"(storyKey, story) in stories | orderByPriority | filter : { columnId:columnKey }\" ng-mouseover=\"story.isCurrentFocus = true\" ng-mouseout=\"story.isCurrentFocus = false\">\n" +
     "                    <div class=\"bs-callout\" ng-class=\"{ 'bs-callout-warning' : story.isCurrentFocus }\" style=\"position:relative; overflow:hidden;\">\n" +
     "                        <div style=\"position:absolute; bottom:-32px; right:-8px; font-size:86px; opacity:0.05; font-family:Times New Roman, Times, serif\">{{story.estimate}}</div>\n" +
-    "                        <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"story.isCurrentFocus\" ng-click=\"deleteStory(columnKey, story.$id)\">&times;</button>\n" +
+    "                        <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"story.isCurrentFocus\" ng-click=\"deleteStory(story.$id)\">&times;</button>\n" +
     "                        <strong>{{story.summary}}</strong>\n" +
     "                        <p><small><em>{{story.description}}</em></small></p>\n" +
     "                        <button class=\"btn btn-primary btn-xs\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></button>\n" +
@@ -124,7 +124,11 @@ angular.module('storyboardModule').run(['$templateCache', function($templateCach
   $templateCache.put('views/release-notes.html',
     "<div class=\"container\">\n" +
     "    <h1>Release Notes</h1>\n" +
-    "    <h2>Planned Features</h2>\n" +
+    "    <h2>Planned Features &amp; Enhancements</h2>\n" +
+    "    <ul>\n" +
+    "        <li>Ability to schedule sprints.</li>\n" +
+    "        <li>Burndown reporting.</li>\n" +
+    "    </ul>\n" +
     "    <h2>What's Available in 0.1 ALPHA</h2>\n" +
     "    <ul>\n" +
     "        <li>Login via Facebook.</li>\n" +
@@ -134,11 +138,7 @@ angular.module('storyboardModule').run(['$templateCache', function($templateCach
     "        <li>Drag and drop prioritisation of user stories.</li>\n" +
     "    </ul>\n" +
     "    <h3>Known Issues</h3>\n" +
-    "    <ul>\n" +
-    "        <li>Switching storyboards does not update stories and requires a reload.</li>\n" +
-    "        <li>When adding a story, the new story is not automatically shown in the user interface.</li>\n" +
-    "    </ul>\n" +
-    "\n" +
+    "    <p>There are no known issues at this time.</p>\n" +
     "</div>\n"
   );
 

@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('storyboardModule')
-  .factory('ColumnService', function ($firebase) {
-        var columnsReference = new Firebase('https://getagile.firebaseio.com/columns');
+angular.module('getAgileApp')
+  .factory('ColumnService', function ($firebase, firebaseRef, syncData, FBURL) {
         return {
             getDefaultColumns: function() {
                 return [
@@ -13,29 +12,33 @@ angular.module('storyboardModule')
                 ];
             },
             getColumns: function(boardId) {
-                var ref = new Firebase('https://getagile.firebaseio.com/columns/' + boardId);
-                return $firebase(ref);
+                return syncData('columns/' + boardId);
             },
             addColumn: function(boardId, column) {
-                var ref = new Firebase('https://getagile.firebaseio.com/columns/' + boardId);
-                ref.push(column);
+                firebaseRef('columns/' + boardId).push(column);
             },
             deleteColumn: function(boardId, columnId) {
-                var ref = new Firebase('https://getagile.firebaseio.com/columns/' + boardId + '/' + columnId);
-                $firebase(ref).$remove();
+                syncData('columns/' + boardId + '/' + columnId).$remove();
+            },
+            deleteColumns: function(boardId) {
+                syncData('columns/' + boardId).$remove();
+                this.deleteStories(boardId);
+            },
+            deleteStories: function(boardId) {
+                syncData('stories/' + boardId).$remove();
             },
             addColumns: function(boardId, columns) {
-                var ref = new Firebase('https://getagile.firebaseio.com/columns/' + boardId);
+                var ref = firebaseRef('columns/' + boardId);
                 for (var index in columns) {
-                    var newColumn = ref.push(columns[index]);
+                    ref.push(columns[index]);
                 }
             },
             getFirstColumn: function(boardId) {
-                var ref = new Firebase('https://getagile.firebaseio.com/columns/' + boardId);
+                var ref = new Firebase(FBURL + '/columns/' + boardId);
                 return $firebase(ref.startAt().limit(1));
             },
             getNextColumn: function(boardId, columnId) {
-                var ref = new Firebase('https://getagile.firebaseio.com/columns/' + boardId);
+                var ref = new Firebase(FBURL + '/columns/' + boardId);
                 return $firebase(ref.startAt(null, columnId).limit(2));
             }
         }

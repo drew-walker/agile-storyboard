@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('storyboardModule')
+angular.module('getAgileApp')
     .directive('draggable', function () {
         return {
             restrict: 'A',

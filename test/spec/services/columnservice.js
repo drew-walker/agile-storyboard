@@ -3,7 +3,7 @@
 describe('Service: ColumnService', function () {
 
   // load the service's module
-  beforeEach(module('storyboardModule'));
+  beforeEach(module('getAgileApp'));
 
   // instantiate service
   var ColumnService;

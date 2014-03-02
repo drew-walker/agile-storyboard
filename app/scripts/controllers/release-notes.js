@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('storyboardModule')
+angular.module('getAgileApp')
   .controller('ReleaseNotesCtrl', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',

@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('storyboardModule')
-    .controller('AddColumnCtrl', function ($scope, $modalInstance, ColumnService, selectedBoardName) {
+angular.module('getAgileApp')
+    .controller('AddColumnCtrl', function ($scope, $modalInstance, ColumnService, selectedBoardId) {
         $scope.newColumn = {};
 
         $scope.add = function() {
-            ColumnService.addColumn(selectedBoardName, $scope.newColumn);
+            ColumnService.addColumn(selectedBoardId, $scope.newColumn);
             $modalInstance.close();
         };
 

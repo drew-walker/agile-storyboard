@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('storyboardModule')
-    .controller('AddStoryCtrl', function ($scope, $modalInstance, StoryService, selectedBoardName) {
+angular.module('getAgileApp')
+    .controller('AddStoryCtrl', function ($scope, $modalInstance, StoryService, selectedBoardId) {
         $scope.newStory = {};
 
         $scope.add = function() {
-            StoryService.addStory(selectedBoardName, $scope.newStory);
+            StoryService.addStory(selectedBoardId, $scope.newStory);
             $modalInstance.close();
         };
 

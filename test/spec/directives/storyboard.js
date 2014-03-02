@@ -3,7 +3,7 @@
 describe('Directive: storyboard', function () {
 
   // load the directive's module
-  beforeEach(module('storyboardModule'));
+  beforeEach(module('getAgileApp'));
 
   var element,
     scope;

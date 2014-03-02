@@ -1,9 +1,6 @@
-
-
-
-angular.module('storyboardModule', ['firebase', 'ui.sortable', 'ui.bootstrap', 'ngRoute'])
+angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.firebase', 'firebase', 'ui.sortable', 'ui.bootstrap', 'ngRoute'])
     .config(function($routeProvider) {
-        $routeProvider.when('/boards/:boardId', {
+        $routeProvider.when('/boards/:boardId/', {
             templateUrl: 'views/board.html',
             controller: 'BoardCtrl'
         }).when('/dashboard', {

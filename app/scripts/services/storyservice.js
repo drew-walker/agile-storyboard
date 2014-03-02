@@ -1,35 +1,34 @@
 'use strict';
 
-angular.module('storyboardModule')
-    .factory('StoryService', function ($firebase, ColumnService) {
-        var storiesReference = new Firebase('https://getagile.firebaseio.com/stories');
+angular.module('getAgileApp')
+    .factory('StoryService', function (firebaseRef, syncData, ColumnService) {
         return {
             addStory: function(boardId, story) {
                 var column = ColumnService.getFirstColumn(boardId);
+                var boardId = boardId;
 
                 column.$on('loaded', function() {
                     var columnId = column.$getIndex(0)[0];
-                    var ref = new Firebase('https://getagile.firebaseio.com/stories/' + columnId);
+                    var ref = firebaseRef('stories/' + boardId);
+                    story.columnId = columnId;
                     var newStory = ref.push();
                     newStory.set(story);
                 });
 
             },
-            getStory: function(columnId, storyId) {
-                var ref = new Firebase('https://getagile.firebaseio.com/stories/' + columnId + '/' + storyId);
-                return $firebase(ref);
+            getStory: function(boardId, storyId) {
+                return syncData('stories/' + boardId + '/' + storyId);
             },
-            getStories: function(columnId) {
-                var ref = new Firebase('https://getagile.firebaseio.com/stories/' + columnId);
-                return $firebase(ref);
+            getStories: function(boardId) {
+                return syncData('stories/' + boardId);
             },
-            deleteStory: function(columnId, storyId) {
-                var ref = new Firebase('https://getagile.firebaseio.com/stories/' + columnId + '/' + storyId);
-                $firebase(ref).$remove();
+            deleteStory: function(boardId, storyId) {
+                syncData('stories/' + boardId + '/' + storyId).$remove();
             },
             progressStory: function(boardId, columnId, storyId) {
                 var self = this;
                 var nextColumn = ColumnService.getNextColumn(boardId, columnId);
+                var boardId = boardId;
                 var columnId = columnId;
                 var storyId = storyId;
 
@@ -37,9 +36,8 @@ angular.module('storyboardModule')
                     var nextColumnId = nextColumn.$getIndex()[1];
                     var story = self.getStory(columnId, storyId);
                     story.$on('loaded', function() {
-                        var ref = new Firebase('https://getagile.firebaseio.com/stories/' + nextColumnId);
-                        ref.push({ "summary" : story.summary, "description" : story.description ? story.description : "" });
-                        self.deleteStory(columnId, storyId);
+                        var ref = firebaseRef('stories/' + boardId + '/' + storyId);
+                        ref.update({ "columnId" : nextColumnId });
                     });
                 });
             }
