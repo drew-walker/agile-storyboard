@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('getAgileApp')
-    .controller('BoardCtrl', function ($scope, $rootScope, $modal, syncData, firebaseRef, BoardService, ColumnService, StoryService, $routeParams, $firebase, $filter) {
+    .controller('BoardCtrl', function ($scope, $rootScope, $modal, syncData, firebaseRef, BoardService, ColumnService, StoryService, $routeParams, $firebase, $filter, $sce) {
         $scope.selectedBoardId = $routeParams.boardId;
         $scope.columns = {};
 
@@ -16,6 +16,10 @@ angular.module('getAgileApp')
         stories.$on('loaded', function() {
             $scope.stories = stories;
         });
+
+        $scope.highlight = function(html, searchFilter) {
+            return $sce.trustAsHtml($filter('highlight')(html, searchFilter, false));
+        };
 
         var columns = syncData('columns/' + $routeParams.boardId);
 

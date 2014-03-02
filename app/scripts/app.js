@@ -1,3 +1,4 @@
+
 angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.firebase', 'firebase', 'ui.sortable', 'ui.utils', 'ui.bootstrap', 'ngRoute'])
     .config(function($routeProvider) {
 
@@ -18,6 +19,9 @@ angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.fireba
         }).when('/release-notes', {
             templateUrl: 'views/release-notes.html',
             controller: 'ReleaseNotesCtrl'
-        })
+        }).when('/profile/:userId', {
+            templateUrl: 'views/profile.html',
+            controller: 'ProfileCtrl'
+        });
 
     });

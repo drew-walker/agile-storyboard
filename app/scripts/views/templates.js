@@ -83,14 +83,26 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "<div class=\"container-fluid\">\n" +
     "    <div class=\"row\">\n" +
     "        <div class=\"col-md-{{columnWidth}}\" ng-repeat=\"(columnKey, column) in columns\">\n" +
-    "            <p ng-model=\"column.name\"><strong>{{column.name}}</strong> <small ng-click=\"deleteColumn(columnKey)\"><a href=\"\" class=\"glyphicon glyphicon-trash\"></a></small></p>\n" +
+    "            <div class=\"row\" style=\"padding-bottom:10px;\">\n" +
+    "                <div class=\"col-sm-6\">\n" +
+    "                    <p ng-model=\"column.name\"><strong>{{column.name}}</strong> <small ng-click=\"deleteColumn(columnKey)\"><a href=\"\" class=\"glyphicon glyphicon-trash\"></a></small></p>\n" +
+    "                </div>\n" +
+    "                <div class=\"col-sm-6\" ng-show=\"(stories | orderByPriority | filter : { columnId:columnKey }).length > 2\">\n" +
+    "                    <form role=\"form\" class=\"form-inline\">\n" +
+    "                        <div class=\"form-group has-feedback\">\n" +
+    "                            <input ng-model=\"searchFilter\" class=\"form-control\" placeholder=\"Filter\" />\n" +
+    "                            <span class=\"glyphicon glyphicon-remove form-control-feedback\" ng-show=\"searchFilter\" ng-click=\"searchFilter=''\"></span>\n" +
+    "                        </div>\n" +
+    "                    </form>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
     "            <div ui-sortable=\"sortableOptions\" class=\"card_container\" ng-model=\"stories\">\n" +
-    "                <div class=\"card\" ng-repeat=\"(storyKey, story) in stories | orderByPriority | filter : { columnId:columnKey }\" ng-mouseover=\"story.isCurrentFocus = true\" ng-mouseout=\"story.isCurrentFocus = false\">\n" +
+    "                <div class=\"card\" ng-repeat=\"(storyKey, story) in stories | orderByPriority | filter : { columnId:columnKey } | filter : searchFilter\" ng-mouseover=\"story.isCurrentFocus = true\" ng-mouseout=\"story.isCurrentFocus = false\">\n" +
     "                    <div class=\"bs-callout\" ng-class=\"{ 'bs-callout-warning' : story.isCurrentFocus }\" style=\"position:relative; overflow:hidden;\">\n" +
     "                        <div style=\"position:absolute; bottom:-32px; right:-8px; font-size:86px; opacity:0.05; font-family:Times New Roman, Times, serif\">{{story.estimate}}</div>\n" +
     "                        <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"story.isCurrentFocus\" ng-click=\"deleteStory(story.$id)\">&times;</button>\n" +
     "                        <strong>{{story.summary}}</strong>\n" +
-    "                        <p><small><em>{{story.description}}</em></small></p>\n" +
+    "                        <p><small><em ng-bind-html=\"highlight(story.description, searchFilter)\"></em></small></p>\n" +
     "                        <button class=\"btn btn-primary btn-xs\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></button>\n" +
     "                    </div>\n" +
     "                </div>\n" +
@@ -118,6 +130,32 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('views/dashboard.html',
     "<p>This is the dashboard view.</p>\n"
+  );
+
+
+  $templateCache.put('views/profile.html',
+    "<div class=\"container\">\n" +
+    "    <h1>My Profile</h1>\n" +
+    "    <form class=\"form-horizontal\" role=\"form\">\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <label class=\"control-label col-sm-3\" for=\"userName\">Name</label>\n" +
+    "            <div class=\"col-sm-9\">\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"userName\" ng-model=\"user.name\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <label class=\"control-label col-sm-3\" for=\"userEmail\">Email</label>\n" +
+    "            <div class=\"col-sm-9\">\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"userEmail\" ng-model=\"user.email\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <div class=\"col-sm-offset-3 col-sm-9\">\n" +
+    "                <button type=\"submit\" class=\"btn btn-default\" ng-click=\"save()\">Save</button>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </form>\n" +
+    "</div>\n"
   );
 
 

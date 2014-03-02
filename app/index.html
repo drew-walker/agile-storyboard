@@ -13,7 +13,7 @@
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-        <div style="padding:0 15px" ng-controller="LoginCtrl">
+        <div style="padding:0 15px" ng-controller="NavigationCtrl">
             <a class="navbar-brand" href="#/release-notes">GetAgile - 0.1 ALPHA</a>
             <ul class="nav navbar-nav">
                 <li>
@@ -21,20 +21,21 @@
                     <ul class="dropdown-menu">
                         <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{key}}"><span ng-show="key==selectedBoardId" class="glyphicon glyphicon-ok"></span> {{board.name}}</a></li>
                         <li role="presentation" class="divider"></li>
-                        <li ng-class="{ 'disabled' : !auth.user }"><a href="" ng-click="showNewStoryboardUI()">Add New Storyboard</a></li>
+                        <li ng-class="{ 'disabled' : !userIsLoggedIn }"><a href="" ng-click="showNewStoryboardUI()">Add New Storyboard</a></li>
                     </ul>
                 </li>
-                <!--<li><a href="#/dashboard">Dashboard</a></li>-->
             </ul>
-            <button ng-show="selectedBoard && auth.user" class="btn btn-danger navbar-btn" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
-            <div class="pull-right" ng-show="auth.user" style="margin-left:15px">
-                <img ng-src="{{profileImageUrl}}" />
-            </div>
-            <ul class="nav navbar-nav navbar-right" ng-cloak>
+            <button ng-show="selectedBoard && userIsLoggedIn" class="btn btn-danger navbar-btn" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+            <!--<div class="pull-right" ng-show="auth.user" style="margin-left:15px">-->
+                <!--<img ng-src="{{profileImageUrl}}" />-->
+            <!--</div>-->
+            <ul class="nav navbar-nav navbar-right" ng-cloak ng-controller="LoginCtrl">
                 <li ng-show="auth.user">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">{{auth.user.name}} <b class="caret"></b></a>
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">{{userName}} <span class="glyphicon glyphicon-user"></span> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li ng-show="auth.user"><a href="" ng-click="auth.$logout()">Logout</a></li>
+                        <li><a href="#/profile/{{auth.user.uid}}">Profile</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li><a href="" ng-click="auth.$logout()">Logout</a></li>
                     </ul>
                 </li>
                 <li ng-hide="auth.user">
@@ -42,10 +43,11 @@
                     <ul class="dropdown-menu">
                         <li><a href="" ng-click="auth.$login('facebook')">with Facebook</a></li>
                         <li><a href="" ng-click="auth.$login('twitter')">with Twitter</a></li>
+                        <li><a href="" ng-click="login()">with Email &amp; Password</a></li>
                     </ul>
                 </li>
             </ul>
-            <div class="btn-group pull-right" ng-show="auth.user" ng-cloak>
+            <div class="btn-group pull-right" ng-show="userIsLoggedIn" ng-cloak>
                 <button ng-show="selectedBoard" class="btn btn-default navbar-btn" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
                 <button ng-show="selectedBoard" class="btn btn-primary navbar-btn" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
             </div>
@@ -95,6 +97,9 @@
     <script src="scripts/controllers/release-notes.js"></script>
     <script src="scripts/services/firebase.js"></script>
     <script src="scripts/directives/focus.js"></script>
+    <script src="scripts/services/login.js"></script>
+    <script src="scripts/controllers/profile.js"></script>
+    <script src="scripts/controllers/navigation.js"></script>
     <!-- endbuild -->
 </body>
 </html>
