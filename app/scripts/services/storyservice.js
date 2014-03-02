@@ -40,6 +40,22 @@ angular.module('getAgileApp')
                         ref.update({ "columnId" : nextColumnId });
                     });
                 });
+            },
+            regressStory: function(boardId, columnId, storyId) {
+                var self = this;
+                var previousColumn = ColumnService.getPreviousColumn(boardId, columnId);
+                var boardId = boardId;
+                var columnId = columnId;
+                var storyId = storyId;
+
+                previousColumn.$on('loaded', function() {
+                    var previousColumnId = previousColumn.$getIndex()[0];
+                    var story = self.getStory(columnId, storyId);
+                    story.$on('loaded', function() {
+                        var ref = firebaseRef('stories/' + boardId + '/' + storyId);
+                        ref.update({ "columnId" : previousColumnId });
+                    });
+                });
             }
         };
     });

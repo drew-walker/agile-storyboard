@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="addStoryLabel">Edit Story</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="storySummary">Summary</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="storySummary" ng-model="story.summary" focus ui-keypress="{13:'save()'}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="storyEstimate">Estimate</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="storyEstimate" ng-model="story.estimate" ui-keypress="{13:'save()'}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="storyDescription">Description</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" id="storyDescription" ng-model="story.description" rows="6"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+</div>

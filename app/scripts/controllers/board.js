@@ -5,6 +5,31 @@ angular.module('getAgileApp')
         $scope.selectedBoardId = $routeParams.boardId;
         $scope.columns = {};
 
+        $scope.showNewStoryUI = function() {
+            $modal.open({
+                templateUrl: 'views/addNewStory.html',
+                controller: 'AddStoryCtrl',
+                resolve: {
+                    selectedBoardId: function() {
+                        return $scope.selectedBoardId;
+                    }
+                },
+                backdrop: 'static'
+            });
+        };
+
+        $scope.showNewColumnUI = function() {
+            $modal.open({
+                templateUrl: 'views/addNewColumn.html',
+                controller: 'AddColumnCtrl',
+                resolve: {
+                    selectedBoardId: function() {
+                        return $scope.selectedBoardId;
+                    }
+                }
+            });
+        };
+
         $rootScope.$broadcast('changeBoard', $routeParams.boardId);
 
         var selectedBoard = syncData('boards/' + $routeParams.boardId);
@@ -18,7 +43,11 @@ angular.module('getAgileApp')
         });
 
         $scope.highlight = function(html, searchFilter) {
-            return $sce.trustAsHtml($filter('highlight')(html, searchFilter, false));
+            if (html) {
+                return $sce.trustAsHtml($filter('highlight')(html, searchFilter, false));
+            } else {
+                return '';
+            }
         };
 
         var columns = syncData('columns/' + $routeParams.boardId);
@@ -34,6 +63,22 @@ angular.module('getAgileApp')
         columns.$on('child_removed', function() {
             $scope.refreshColumns(columns);
         });
+
+        $scope.showEditStoryUI = function(story) {
+            $modal.open({
+                templateUrl: 'views/editStory.html',
+                controller: 'EditStoryCtrl',
+                resolve: {
+                    story: function() {
+                        return story;
+                    },
+                    boardId: function() {
+                        return $scope.selectedBoardId;
+                    }
+                },
+                backdrop: 'static'
+            });
+        };
 
         $scope.refreshColumns = function(columns) {
             $scope.columns = columns;
@@ -57,14 +102,21 @@ angular.module('getAgileApp')
             StoryService.progressStory($scope.selectedBoardId, columnId, storyId);
         };
 
+        $scope.regressStory = function(columnId, storyId) {
+            StoryService.regressStory($scope.selectedBoardId, columnId, storyId);
+        };
+
 //        $scope.sortableOptions = {
 //            stop: function(e, ui) {
+//                var i = 1;
 //                angular.forEach($scope.stories, function(story, index) {
 //                    if (story.$id) {
-//                        console.log(index);
-//                        console.log(story.$id);
+//                        story.$priority = i;
+//                        story.isCurrentFocus = null;
+//                        stories.$save(story.$id);
+//                        i++;
 //                    }
-//                    //$scope.stories.child(story.$id).setPriority(index);
+//
 //                });
 //            },
 //            axis: 'y'

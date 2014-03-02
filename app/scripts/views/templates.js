@@ -82,28 +82,41 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
   $templateCache.put('views/board.html',
     "<div class=\"container-fluid\">\n" +
     "    <div class=\"row\">\n" +
+    "        <div class=\"col-sm-6\" ng-show=\"(stories | orderByPriority).length > 2\">\n" +
+    "            <form role=\"form\" class=\"form-inline\">\n" +
+    "                <div class=\"form-group has-feedback\">\n" +
+    "                    <input ng-model=\"searchFilter\" class=\"form-control\" placeholder=\"Filter\" />\n" +
+    "                    <span class=\"glyphicon glyphicon-remove form-control-feedback\" ng-show=\"searchFilter\" ng-click=\"searchFilter=''\"></span>\n" +
+    "                </div>\n" +
+    "            </form>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-sm-6\">\n" +
+    "            <div class=\"btn-group pull-right\" ng-cloak>\n" +
+    "                <button ng-show=\"selectedBoard\" class=\"btn btn-default navbar-btn\" ng-click=\"showNewColumnUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Column</button>\n" +
+    "                <button ng-show=\"selectedBoard\" class=\"btn btn-primary navbar-btn\" ng-click=\"showNewStoryUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Story</button>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"row\">\n" +
     "        <div class=\"col-md-{{columnWidth}}\" ng-repeat=\"(columnKey, column) in columns\">\n" +
     "            <div class=\"row\" style=\"padding-bottom:10px;\">\n" +
-    "                <div class=\"col-sm-6\">\n" +
+    "                <div class=\"col-sm-12\">\n" +
     "                    <p ng-model=\"column.name\"><strong>{{column.name}}</strong> <small ng-click=\"deleteColumn(columnKey)\"><a href=\"\" class=\"glyphicon glyphicon-trash\"></a></small></p>\n" +
     "                </div>\n" +
-    "                <div class=\"col-sm-6\" ng-show=\"(stories | orderByPriority | filter : { columnId:columnKey }).length > 2\">\n" +
-    "                    <form role=\"form\" class=\"form-inline\">\n" +
-    "                        <div class=\"form-group has-feedback\">\n" +
-    "                            <input ng-model=\"searchFilter\" class=\"form-control\" placeholder=\"Filter\" />\n" +
-    "                            <span class=\"glyphicon glyphicon-remove form-control-feedback\" ng-show=\"searchFilter\" ng-click=\"searchFilter=''\"></span>\n" +
-    "                        </div>\n" +
-    "                    </form>\n" +
-    "                </div>\n" +
     "            </div>\n" +
-    "            <div ui-sortable=\"sortableOptions\" class=\"card_container\" ng-model=\"stories\">\n" +
+    "            <div class=\"bs-callout\" ng-show=\"(stories | orderByPriority | filter : { columnId:columnKey }).length == 0\" class=\"visible-xs\">\n" +
+    "                <p class=\"text-muted\">There are currently no stories in <strong>\"{{column.name}}\"</strong></p>\n" +
+    "            </div>\n" +
+    "            <div class=\"card_container\" ng-model=\"stories\"><!-- ui-sortable=\"sortableOptions\" -->\n" +
     "                <div class=\"card\" ng-repeat=\"(storyKey, story) in stories | orderByPriority | filter : { columnId:columnKey } | filter : searchFilter\" ng-mouseover=\"story.isCurrentFocus = true\" ng-mouseout=\"story.isCurrentFocus = false\">\n" +
     "                    <div class=\"bs-callout\" ng-class=\"{ 'bs-callout-warning' : story.isCurrentFocus }\" style=\"position:relative; overflow:hidden;\">\n" +
     "                        <div style=\"position:absolute; bottom:-32px; right:-8px; font-size:86px; opacity:0.05; font-family:Times New Roman, Times, serif\">{{story.estimate}}</div>\n" +
-    "                        <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"story.isCurrentFocus\" ng-click=\"deleteStory(story.$id)\">&times;</button>\n" +
-    "                        <strong>{{story.summary}}</strong>\n" +
+    "                        <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"story.isCurrentFocus\" ng-click=\"deleteStory(story.$id)\" style=\"position:absolute; top:0; right:4px;\">&times;</button>\n" +
+    "                        <strong ng-bind-html=\"highlight(story.summary, searchFilter)\"></strong>\n" +
     "                        <p><small><em ng-bind-html=\"highlight(story.description, searchFilter)\"></em></small></p>\n" +
+    "                        <button class=\"btn btn-primary btn-xs\" ng-click=\"regressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-left\"></span></button>\n" +
     "                        <button class=\"btn btn-primary btn-xs\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></button>\n" +
+    "                        <a href=\"\" ng-show=\"story.isCurrentFocus\" ng-click=\"showEditStoryUI(story)\">Edit</a>\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
@@ -130,6 +143,40 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('views/dashboard.html',
     "<p>This is the dashboard view.</p>\n"
+  );
+
+
+  $templateCache.put('views/editStory.html',
+    "<div class=\"modal-header\">\n" +
+    "    <button type=\"button\" class=\"close\" ng-click=\"cancel()\" aria-hidden=\"true\">&times;</button>\n" +
+    "    <h4 class=\"modal-title\" id=\"addStoryLabel\">Edit Story</h4>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <form class=\"form-horizontal\" role=\"form\">\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <label class=\"control-label col-sm-3\" for=\"storySummary\">Summary</label>\n" +
+    "            <div class=\"col-sm-9\">\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"storySummary\" ng-model=\"story.summary\" focus ui-keypress=\"{13:'save()'}\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <label class=\"control-label col-sm-3\" for=\"storyEstimate\">Estimate</label>\n" +
+    "            <div class=\"col-sm-9\">\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"storyEstimate\" ng-model=\"story.estimate\" ui-keypress=\"{13:'save()'}\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <label class=\"control-label col-sm-3\" for=\"storyDescription\">Description</label>\n" +
+    "            <div class=\"col-sm-9\">\n" +
+    "                <textarea class=\"form-control\" id=\"storyDescription\" ng-model=\"story.description\" rows=\"6\"></textarea>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </form>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
+    "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
+    "</div>"
   );
 
 

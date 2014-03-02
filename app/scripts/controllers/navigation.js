@@ -17,35 +17,10 @@ angular.module('getAgileApp')
             $scope.changeBoards(boardId);
         });
 
-        $scope.showNewStoryUI = function() {
-            $modal.open({
-                templateUrl: 'views/addNewStory.html',
-                controller: 'AddStoryCtrl',
-                resolve: {
-                    selectedBoardId: function() {
-                        return $scope.selectedBoardId;
-                    }
-                },
-                backdrop: 'static'
-            });
-        };
-
         $scope.showNewStoryboardUI = function() {
             $modal.open({
                 templateUrl: 'views/addNewStoryboard.html',
                 controller: 'AddStoryboardCtrl'
-            });
-        };
-
-        $scope.showNewColumnUI = function() {
-            $modal.open({
-                templateUrl: 'views/addNewColumn.html',
-                controller: 'AddColumnCtrl',
-                resolve: {
-                    selectedBoardId: function() {
-                        return $scope.selectedBoardId;
-                    }
-                }
             });
         };
 

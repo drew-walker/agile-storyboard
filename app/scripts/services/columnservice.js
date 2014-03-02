@@ -40,6 +40,10 @@ angular.module('getAgileApp')
             getNextColumn: function(boardId, columnId) {
                 var ref = new Firebase(FBURL + '/columns/' + boardId);
                 return $firebase(ref.startAt(null, columnId).limit(2));
+            },
+            getPreviousColumn: function(boardId, columnId) {
+                var ref = new Firebase(FBURL + '/columns/' + boardId);
+                return $firebase(ref.endAt(null, columnId).limit(2));
             }
         }
   });
