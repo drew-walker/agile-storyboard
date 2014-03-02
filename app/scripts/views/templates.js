@@ -82,8 +82,8 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
   $templateCache.put('views/board.html',
     "<div class=\"container-fluid\">\n" +
     "    <div class=\"row\">\n" +
-    "        <div class=\"col-sm-6\" ng-show=\"(stories | orderByPriority).length > 2\">\n" +
-    "            <form role=\"form\" class=\"form-inline\">\n" +
+    "        <div class=\"col-sm-6\">\n" +
+    "            <form role=\"form\" class=\"form-inline\" ng-show=\"(stories | orderByPriority).length > 2\">\n" +
     "                <div class=\"form-group has-feedback\">\n" +
     "                    <input ng-model=\"searchFilter\" class=\"form-control\" placeholder=\"Filter\" />\n" +
     "                    <span class=\"glyphicon glyphicon-remove form-control-feedback\" ng-show=\"searchFilter\" ng-click=\"searchFilter=''\"></span>\n" +
