@@ -22,6 +22,8 @@ angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.fireba
         }).when('/profile/:userId', {
             templateUrl: 'views/profile.html',
             controller: 'ProfileCtrl'
+        }).otherwise({
+            redirectTo: '/boards'
         });
 
     });
