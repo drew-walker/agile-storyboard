@@ -7,7 +7,7 @@
         <div class="form-group" ng-class="{ 'has-error' : AddStoryboardForm.storyboardName.$invalid }">
             <label class="control-label col-sm-3" for="storyboardName">Name</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id="storyboardName" name="storyboardName" ng-model="newStoryboard.name" required />
+                <input type="text" class="form-control" id="storyboardName" name="storyboardName" ng-model="newStoryboard.name" required focus ui-keypress="{13:'add()'}" />
             </div>
         </div>
     </form>

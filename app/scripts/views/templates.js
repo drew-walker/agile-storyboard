@@ -11,7 +11,7 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "        <div class=\"form-group\">\n" +
     "            <label class=\"control-label col-sm-3\" for=\"columnName\">Name</label>\n" +
     "            <div class=\"col-sm-9\">\n" +
-    "                <input type=\"text\" class=\"form-control\" id=\"columnName\" ng-model=\"newColumn.name\" />\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"columnName\" ng-model=\"newColumn.name\" focus ui-keypress=\"{13:'add()'}\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </form>\n" +
@@ -33,13 +33,13 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "        <div class=\"form-group\">\n" +
     "            <label class=\"control-label col-sm-3\" for=\"storySummary\">Summary</label>\n" +
     "            <div class=\"col-sm-9\">\n" +
-    "                <input type=\"text\" class=\"form-control\" id=\"storySummary\" ng-model=\"newStory.summary\" />\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"storySummary\" ng-model=\"newStory.summary\" focus ui-keypress=\"{13:'add()'}\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "        <div class=\"form-group\">\n" +
     "            <label class=\"control-label col-sm-3\" for=\"storyEstimate\">Estimate</label>\n" +
     "            <div class=\"col-sm-9\">\n" +
-    "                <input type=\"text\" class=\"form-control\" id=\"storyEstimate\" ng-model=\"newStory.estimate\" />\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"storyEstimate\" ng-model=\"newStory.estimate\" ui-keypress=\"{13:'add()'}\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "        <div class=\"form-group\">\n" +
@@ -67,7 +67,7 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "        <div class=\"form-group\" ng-class=\"{ 'has-error' : AddStoryboardForm.storyboardName.$invalid }\">\n" +
     "            <label class=\"control-label col-sm-3\" for=\"storyboardName\">Name</label>\n" +
     "            <div class=\"col-sm-9\">\n" +
-    "                <input type=\"text\" class=\"form-control\" id=\"storyboardName\" name=\"storyboardName\" ng-model=\"newStoryboard.name\" required />\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"storyboardName\" name=\"storyboardName\" ng-model=\"newStoryboard.name\" required focus ui-keypress=\"{13:'add()'}\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </form>\n" +

@@ -7,7 +7,7 @@
         <div class="form-group">
             <label class="control-label col-sm-3" for="columnName">Name</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id="columnName" ng-model="newColumn.name" />
+                <input type="text" class="form-control" id="columnName" ng-model="newColumn.name" focus ui-keypress="{13:'add()'}" />
             </div>
         </div>
     </form>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('getAgileApp')
-    .controller('LoginCtrl', function ($scope, $modal, $rootScope, firebaseRef, syncData, $firebaseSimpleLogin, BoardService) {
+    .controller('LoginCtrl', function ($scope, $modal, $rootScope, firebaseRef, syncData, $firebaseSimpleLogin, BoardService, $location) {
         $scope.boards = syncData('boards');
         $rootScope.$on('changeBoard', function(event, boardId) {
             $scope.selectedBoardId = boardId;
@@ -42,6 +42,7 @@ angular.module('getAgileApp')
 
         $scope.deleteStoryboard = function() {
             BoardService.deleteBoard($scope.selectedBoardId);
+            $location.path('/boards');
         };
 
         $scope.changeBoards = function(boardId) {
@@ -53,8 +54,13 @@ angular.module('getAgileApp')
 
         $scope.auth = $firebaseSimpleLogin(firebaseRef());
 
-//        $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
-//            console.log(user);
-//            console.log($scope.auth);
-//        });
+        $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
+            switch ($scope.auth.user.provider) {
+                case "twitter":
+                    $scope.profileImageUrl = $scope.auth.user.profile_image_url;
+                    break;
+                case "facebook":
+                    $scope.profileImageUrl = "http://graph.facebook.com/" + $scope.auth.user.username + "/picture";
+            }
+        });
     });

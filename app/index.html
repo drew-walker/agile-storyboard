@@ -28,7 +28,7 @@
             </ul>
             <button ng-show="selectedBoard && auth.user" class="btn btn-danger navbar-btn" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
             <div class="pull-right" ng-show="auth.user" style="margin-left:15px">
-                <img ng-src="http://graph.facebook.com/{{auth.user.username}}/picture" />
+                <img ng-src="{{profileImageUrl}}" />
             </div>
             <ul class="nav navbar-nav navbar-right" ng-cloak>
                 <li ng-show="auth.user">
@@ -37,7 +37,13 @@
                         <li ng-show="auth.user"><a href="" ng-click="auth.$logout()">Logout</a></li>
                     </ul>
                 </li>
-                <li ng-hide="auth.user"><a href="" ng-click="auth.$login('facebook')">Login</a></li>
+                <li ng-hide="auth.user">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Login <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="" ng-click="auth.$login('facebook')">with Facebook</a></li>
+                        <li><a href="" ng-click="auth.$login('twitter')">with Twitter</a></li>
+                    </ul>
+                </li>
             </ul>
             <div class="btn-group pull-right" ng-show="auth.user" ng-cloak>
                 <button ng-show="selectedBoard" class="btn btn-default navbar-btn" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
@@ -56,7 +62,6 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angular-mocks/angular-mocks.js"></script>
     <script src="bower_components/firebase-simple-login/firebase-simple-login.js"></script>
@@ -64,6 +69,7 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
+    <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
@@ -87,6 +93,7 @@
     <script src="scripts/controllers/dashboard.js"></script>
     <script src="scripts/controllers/release-notes.js"></script>
     <script src="scripts/services/firebase.js"></script>
+    <script src="scripts/directives/focus.js"></script>
     <!-- endbuild -->
 </body>
 </html>
