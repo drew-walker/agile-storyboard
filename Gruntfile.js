@@ -249,6 +249,7 @@ module.exports = function (grunt) {
                         'views/{,*/}*.html',
                         'images/{,*/}*.{webp}',
                         'fonts/*',
+                        'newrelic.js',
                         'package.json',
                         'Procfile',
                         'web.js'
