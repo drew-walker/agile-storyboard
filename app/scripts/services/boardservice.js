@@ -22,8 +22,9 @@ angular.module('getAgileApp')
                 return syncData('boards', 1);
             },
             deleteBoard: function(boardId) {
-                syncData('boards/' + boardId).$remove();
-                ColumnService.deleteColumns(boardId);
+                syncData('boards/' + boardId + '/archived').$set(1);
+//                syncData('boards/' + boardId).$remove();
+//                ColumnService.deleteColumns(boardId);
             }
         }
   });

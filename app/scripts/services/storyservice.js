@@ -34,7 +34,7 @@ angular.module('getAgileApp')
 
                 nextColumn.$on('loaded', function() {
                     var nextColumnId = nextColumn.$getIndex()[1];
-                    var story = self.getStory(columnId, storyId);
+                    var story = self.getStory(boardId, storyId);
                     story.$on('loaded', function() {
                         var ref = firebaseRef('stories/' + boardId + '/' + storyId);
                         ref.update({ "columnId" : nextColumnId });
@@ -50,7 +50,7 @@ angular.module('getAgileApp')
 
                 previousColumn.$on('loaded', function() {
                     var previousColumnId = previousColumn.$getIndex()[0];
-                    var story = self.getStory(columnId, storyId);
+                    var story = self.getStory(boardId, storyId);
                     story.$on('loaded', function() {
                         var ref = firebaseRef('stories/' + boardId + '/' + storyId);
                         ref.update({ "columnId" : previousColumnId });

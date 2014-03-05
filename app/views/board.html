@@ -1,38 +1,54 @@
-<div class="container-fluid">
+<div style="padding:0 15px;">
     <div class="row">
-        <div class="col-xs-12">
-            <form class="form-inline pull-right">
-                <div class="form-group has-feedback" ng-show="(stories | orderByPriority).length > 2">
-                    <input ng-model="searchFilter" class="form-control" placeholder="Filter" />
-                    <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="searchFilter" ng-click="searchFilter=''"></span>
+        <div class="col-sm-12">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form class="form-inline pull-right">
+                            <div class="form-group has-feedback" ng-show="(stories | orderByPriority).length > 2">
+                                <input ng-model="searchFilter" class="form-control" placeholder="Filter" />
+                                <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="searchFilter" ng-click="searchFilter=''"></span>
+                            </div>
+                            <div class="btn-group">
+                                <button ng-show="selectedBoard" class="btn btn-default navbar-btn" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
+                                <button ng-show="selectedBoard" class="btn btn-primary navbar-btn" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="btn-group">
-                    <button ng-show="selectedBoard" class="btn btn-default navbar-btn" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
-                    <button ng-show="selectedBoard" class="btn btn-primary navbar-btn" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-{{columnWidth}}" ng-repeat="(columnKey, column) in columns">
-            <div class="row" style="padding-bottom:10px;">
-                <div class="col-sm-12">
-                    <p ng-model="column.name"><strong>{{column.name}}</strong> <small ng-click="deleteColumn(columnKey)"><a href="" class="glyphicon glyphicon-trash"></a></small></p>
-                </div>
-            </div>
-            <div class="bs-callout" ng-show="(stories | orderByPriority | filter : { columnId:columnKey }).length == 0" class="visible-xs">
-                <p class="text-muted">There are currently no stories in <strong>"{{column.name}}"</strong></p>
-            </div>
-            <div class="card_container" ng-model="stories"><!-- ui-sortable="sortableOptions" -->
-                <div class="card" ng-repeat="(storyKey, story) in stories | orderByPriority | filter : { columnId:columnKey } | filter : searchFilter" ng-mouseover="story.isCurrentFocus = true" ng-mouseout="story.isCurrentFocus = false">
-                    <div class="bs-callout" ng-class="{ 'bs-callout-warning' : story.isCurrentFocus }" style="position:relative; overflow:hidden;">
-                        <div style="position:absolute; bottom:-32px; right:-8px; font-size:86px; opacity:0.05; font-family:Times New Roman, Times, serif">{{story.estimate}}</div>
-                        <button type="button" class="close" aria-hidden="true" ng-show="story.isCurrentFocus" ng-click="deleteStory(story.$id)" style="position:absolute; top:0; right:4px;">&times;</button>
-                        <strong ng-bind-html="highlight(story.summary, searchFilter)"></strong>
-                        <p><small><em ng-bind-html="highlight(story.description, searchFilter)"></em></small></p>
-                        <button class="btn btn-primary btn-xs" ng-click="regressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                        <button class="btn btn-primary btn-xs" ng-click="progressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-right"></span></button>
-                        <a href="" ng-show="story.isCurrentFocus" ng-click="showEditStoryUI(story)">Edit</a>
+                <div class="row" id="boardColumns">
+                    <div class="col-md-{{columnWidth}}" ng-repeat="(columnKey, column) in columns">
+                        <div class="well well-sm">
+                            <div class="row" style="padding-bottom:10px;">
+                                <div class="col-sm-12">
+                                    <p ng-model="column.name"><strong>{{column.name}}</strong> <small ng-click="deleteColumn(columnKey)"><a href="" class="glyphicon glyphicon-trash"></a></small></p>
+                                </div>
+                            </div>
+                            <!--<div class="bs-callout" ng-show="(stories | orderByPriority | filter : { columnId:columnKey }).length == 0" class="visible-xs">-->
+                                <!--<p class="text-muted">There are currently no stories in <strong>"{{column.name}}"</strong></p>-->
+                            <!--</div>-->
+                            <ul class="list-group" ng-model="stories"><!-- ui-sortable="sortableOptions" -->
+                                <li href="" class="list-group-item clearfix" ng-repeat="(storyKey, story) in stories | orderByPriority | filter : { columnId:columnKey } | filter : searchFilter" ng-mouseover="story.isCurrentFocus = true" ng-mouseout="story.isCurrentFocus = false">
+                                    <!--<div class="bs-callout" ng-class="{ 'bs-callout-warning' : story.isCurrentFocus }" style="position:relative; overflow:hidden;">-->
+                                        <span class="badge">{{story.estimate}}</span>
+                                        <!--<button type="button" class="close" aria-hidden="true" ng-show="story.isCurrentFocus" style="position:absolute; top:0; right:4px;">&times;</button>-->
+                                        <p class="list-group-item-heading"><strong ng-bind-html="highlight(story.summary, searchFilter)"></strong></p>
+                                        <p class="list-group-item-text" ng-bind-html="highlight(story.description, searchFilter)"></p>
+                                        <!--<button class="btn btn-primary btn-xs" ng-click="regressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-left"></span></button>-->
+                                        <!--<button class="btn btn-primary btn-xs" ng-click="progressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-right"></span></button>-->
+                                        <div ng-class="{ 'invisible' : !story.isCurrentFocus }" class="pull-left">
+                                            <a href="" ng-click="regressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-left"></span></a>
+                                            <a href="" ng-click="progressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-right"></span></a>
+                                            <a href="" ng-click="showEditStoryUI(story)"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        </div>
+                                        <div ng-class="{ 'invisible' : !story.isCurrentFocus }" class="pull-right">
+
+                                            <a href="" ng-click="deleteStory(story.$id)"><span class="glyphicon glyphicon-trash"></span></a>
+                                        </div>
+                                    <!--</div>-->
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

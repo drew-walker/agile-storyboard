@@ -1,11 +1,21 @@
 'use strict';
 
 angular.module('getAgileApp')
-    .controller('NavigationCtrl', function ($scope, $rootScope, syncData, $modal) {
+    .controller('NavigationCtrl', function ($scope, $rootScope, syncData, firebaseRef, $modal, BoardService, $location) {
         $scope.boards = syncData('boards');
+        //$scope.boards = [];
 
         $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
             $scope.userIsLoggedIn = true;
+
+            $scope.boardsIndex = new FirebaseIndex(firebaseRef('users/' + user.uid + '/boards'), firebaseRef('boards/'));
+
+            $scope.boardsIndex.on('child_added', function(snapshot) {
+                //$scope.boards = $scope.boardsIndex.dataRef;
+
+                //console.log($scope.boardsIndex.childRefs);
+                //$scope.boards.push(snapshot.val());
+            });
         });
 
         $rootScope.$on("$firebaseSimpleLogin:logout", function(e, user) {

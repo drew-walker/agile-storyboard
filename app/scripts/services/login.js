@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('getAgileApp')
-    .factory('loginService', function ($firebaseSimpleLogin, firebaseRef, profileCreator) {
+    .factory('loginService', function ($firebaseSimpleLogin, firebaseRef, syncData, profileCreator, $log) {
         var auth = null;
 
         return {
@@ -24,6 +24,18 @@ angular.module('getAgileApp')
                             callback(null, user);
                         }
                     }, callback);
+            },
+
+            loginWithFacebook:function() {
+                assertAuth();
+                auth.$login('facebook').then(function(user) {
+                    firebaseRef('users/' + user.uid).once('value', function(profile) {
+                        console.log(profile.val());
+                        if (!profile.val()) {
+                            profileCreator(user.uid, "");
+                        }
+                    });
+                });
             },
 
             logout: function() {

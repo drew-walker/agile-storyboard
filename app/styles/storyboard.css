@@ -1,70 +1,21 @@
-/*.card_container {*/
-    /*perspective: 1000;*/
-/*}*/
-/*.card {*/
-    /*transform-style: preserve-3d;*/
-    /*transition: all 0.5s linear;*/
-/*}*/
-
-/*.card:hover {*/
-    /*transform: rotateY(180deg);*/
-/*}*/
-
-/*.face {*/
-    /*backface-visibility:hidden;*/
-/*}*/
-
-/*.face.back {*/
-    /*transform: rotateY(180deg);*/
-/*}*/
-
-.bs-callout {
-    margin: 0;
-    padding: 10px;
-    border:1px solid #ccc;
-    border-left-width:4px;
-    background-color: #eee;
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
 }
-
-.bs-callout h4 {
-    margin-top: 0;
-    margin-bottom: 5px
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
-
-.bs-callout p:last-child {
-    margin-bottom: 0
-}
-
-.bs-callout code {
-    background-color: #fff;
-    border-radius: 3px
-}
-
-.bs-callout-danger {
-    background-color: #fdf7f7;
-    border-color: #d9534f
-}
-
-.bs-callout-danger h4 {
-    color: #d9534f
-}
-
-.bs-callout-warning {
-    background-color: #fcf8f2;
-    border-color: #f0ad4e
-}
-
-.bs-callout-warning h4 {
-    color: #f0ad4e
-}
-
-.bs-callout-info {
-    background-color: #f4f8fa;
-    border-color: #5bc0de
-}
-
-.bs-callout-info h4 {
-    color: #5bc0de
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #000;
+    color:#999;
 }
 
 .row > div.over {
@@ -98,4 +49,12 @@
 
 .card_container:last-child {
     margin-bottom:30px;
+}
+
+#footer p {
+    margin:15px 0;
+}
+
+#footer .btn {
+    margin-right:5px;
 }

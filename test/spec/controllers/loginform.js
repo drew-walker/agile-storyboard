@@ -1,22 +1,22 @@
 'use strict';
 
-describe('Controller: QuickLoginCtrl', function () {
+describe('Controller: LoginformCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('getAgileApp'));
+  beforeEach(module('agileStoryboardApp'));
 
-  var QuickLoginCtrl,
+  var LoginformCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    QuickLoginCtrl = $controller('QuickLoginCtrl', {
+    LoginformCtrl = $controller('LoginformCtrl', {
       $scope: scope
     });
   }));
 
   it('should attach a list of awesomeThings to the scope', function () {
-    expect(true).toBe(true);
+    expect(scope.awesomeThings.length).toBe(3);
   });
 });

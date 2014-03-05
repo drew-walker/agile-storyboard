@@ -25,7 +25,7 @@
                 <a class="navbar-brand" href="#/release-notes">GetAgile - 0.1 ALPHA</a>
             </div>
             <div class="collapse navbar-collapse" id="collapse-1">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav hidden-xs">
                     <li>
                         <a href="" ng-cloak class="dropdown-toggle" data-toggle="dropdown">{{selectedBoard.name}} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -35,8 +35,15 @@
                         </ul>
                     </li>
                 </ul>
-                <!--<button ng-show="selectedBoard && userIsLoggedIn" class="btn btn-danger navbar-btn" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>-->
-                <div class="navbar-right" ng-controller="LoginCtrl">
+                <ul class="nav navbar-nav visible-xs">
+                    <li>
+                        <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{key}}"><span ng-show="key==selectedBoardId" class="glyphicon glyphicon-ok"></span> {{board.name}}</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li><a href="" ng-click="auth.$logout()">Logout</a></li>
+                    </li>
+                </ul>
+                <!--<button ng-show="selectedBoard && userIsLoggedIn" class="btn btn-danger navbar-btn hidden-xs" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>-->
+                <div class="navbar-right hidden-xs" ng-controller="QuickLoginCtrl">
                     <div class="navbar-right" ng-show="auth.user" style="margin-left:15px">
                         <img ng-src="{{profileImageUrl}}" />
                     </div>
@@ -52,7 +59,7 @@
                         <li ng-hide="auth.user">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown">Login <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="" ng-click="auth.$login('facebook')">with Facebook</a></li>
+                                <li><a href="" ng-click="loginWithFacebook()">with Facebook</a></li>
                                 <li><a href="" ng-click="auth.$login('twitter')">with Twitter</a></li>
                                 <li><a href="" ng-click="login()">with Email &amp; Password</a></li>
                             </ul>
@@ -62,11 +69,22 @@
             </div>
         </div>
     </nav>
-    <div style="padding:0 15px;">
-        <div class="row">
-            <div class="col-sm-12">
-                <div ng-view></div>
+    <div ng-view></div>
+    <div id="footer">
+        <div style="padding:0 15px" ng-controller="TeamCtrl">
+            <div ng-show="team.length > 0">
+                <p>This board is shared with <span ng-repeat="person in team" class="btn btn-default btn-sm" ng-click="removePersonFromTeam(person.$id)">{{person.name}} <span class="glyphicon glyphicon-remove"></span></span></p>
             </div>
+        <!--<div ng-show="team.length == 0">-->
+            <!--<p>This board is not shared.</p>-->
+        <!--</div>-->
+        <!--<p>The admin of this board is {{admin.name}}.</p>-->
+        <!--<form class="form-inline">-->
+            <!--<div class="form-group">-->
+                <!--<input type="text" class="form-control input-sm" ng-model="newTeamMemberUserId" />-->
+            <!--</div>-->
+            <!--<button type="submit" class="btn btn-default btn-sm" ng-click="addPersonToTeam()">Share</button>-->
+        <!--</form>-->
         </div>
     </div>
     <!-- build:js scripts/vendor.js -->
@@ -83,6 +101,7 @@
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+    <script src="scripts/libraries/FirebaseIndex.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -93,12 +112,11 @@
     <script src="scripts/directives/draggable.js"></script>
     <script src="scripts/directives/droppable.js"></script>
     <script src="scripts/directives/board.js"></script>
-    <script src="scripts/directives/boardSelector.js"></script>
-    <script src="scripts/controllers/login.js"></script>
-    <script src="scripts/directives/loginBox.js"></script>
-    <script src="scripts/services/BoardService.js"></script>
-    <script src="scripts/services/ColumnService.js"></script>
-    <script src="scripts/services/StoryService.js"></script>
+    <script src="scripts/directives/boardselector.js"></script>
+    <script src="scripts/controllers/quicklogin.js"></script>
+    <script src="scripts/services/boardservice.js"></script>
+    <script src="scripts/services/columnservice.js"></script>
+    <script src="scripts/services/storyservice.js"></script>
     <script src="scripts/controllers/addstoryboard.js"></script>
     <script src="scripts/controllers/addcolumn.js"></script>
     <script src="scripts/controllers/addstory.js"></script>
@@ -110,6 +128,9 @@
     <script src="scripts/services/login.js"></script>
     <script src="scripts/controllers/profile.js"></script>
     <script src="scripts/controllers/navigation.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/LoginForm.js"></script>
+    <script src="scripts/controllers/Team.js"></script>
     <!-- endbuild -->
 </body>
 </html>

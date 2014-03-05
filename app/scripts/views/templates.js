@@ -80,41 +80,57 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/board.html',
-    "<div class=\"container-fluid\">\n" +
+    "<div style=\"padding:0 15px;\">\n" +
     "    <div class=\"row\">\n" +
-    "        <div class=\"col-xs-12\">\n" +
-    "            <form class=\"form-inline pull-right\">\n" +
-    "                <div class=\"form-group has-feedback\" ng-show=\"(stories | orderByPriority).length > 2\">\n" +
-    "                    <input ng-model=\"searchFilter\" class=\"form-control\" placeholder=\"Filter\" />\n" +
-    "                    <span class=\"glyphicon glyphicon-remove form-control-feedback\" ng-show=\"searchFilter\" ng-click=\"searchFilter=''\"></span>\n" +
+    "        <div class=\"col-sm-12\">\n" +
+    "            <div class=\"container-fluid\">\n" +
+    "                <div class=\"row\">\n" +
+    "                    <div class=\"col-xs-12\">\n" +
+    "                        <form class=\"form-inline pull-right\">\n" +
+    "                            <div class=\"form-group has-feedback\" ng-show=\"(stories | orderByPriority).length > 2\">\n" +
+    "                                <input ng-model=\"searchFilter\" class=\"form-control\" placeholder=\"Filter\" />\n" +
+    "                                <span class=\"glyphicon glyphicon-remove form-control-feedback\" ng-show=\"searchFilter\" ng-click=\"searchFilter=''\"></span>\n" +
+    "                            </div>\n" +
+    "                            <div class=\"btn-group\">\n" +
+    "                                <button ng-show=\"selectedBoard\" class=\"btn btn-default navbar-btn\" ng-click=\"showNewColumnUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Column</button>\n" +
+    "                                <button ng-show=\"selectedBoard\" class=\"btn btn-primary navbar-btn\" ng-click=\"showNewStoryUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Story</button>\n" +
+    "                            </div>\n" +
+    "                        </form>\n" +
+    "                    </div>\n" +
     "                </div>\n" +
-    "                <div class=\"btn-group\">\n" +
-    "                    <button ng-show=\"selectedBoard\" class=\"btn btn-default navbar-btn\" ng-click=\"showNewColumnUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Column</button>\n" +
-    "                    <button ng-show=\"selectedBoard\" class=\"btn btn-primary navbar-btn\" ng-click=\"showNewStoryUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Story</button>\n" +
-    "                </div>\n" +
-    "            </form>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"row\">\n" +
-    "        <div class=\"col-md-{{columnWidth}}\" ng-repeat=\"(columnKey, column) in columns\">\n" +
-    "            <div class=\"row\" style=\"padding-bottom:10px;\">\n" +
-    "                <div class=\"col-sm-12\">\n" +
-    "                    <p ng-model=\"column.name\"><strong>{{column.name}}</strong> <small ng-click=\"deleteColumn(columnKey)\"><a href=\"\" class=\"glyphicon glyphicon-trash\"></a></small></p>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "            <div class=\"bs-callout\" ng-show=\"(stories | orderByPriority | filter : { columnId:columnKey }).length == 0\" class=\"visible-xs\">\n" +
-    "                <p class=\"text-muted\">There are currently no stories in <strong>\"{{column.name}}\"</strong></p>\n" +
-    "            </div>\n" +
-    "            <div class=\"card_container\" ng-model=\"stories\"><!-- ui-sortable=\"sortableOptions\" -->\n" +
-    "                <div class=\"card\" ng-repeat=\"(storyKey, story) in stories | orderByPriority | filter : { columnId:columnKey } | filter : searchFilter\" ng-mouseover=\"story.isCurrentFocus = true\" ng-mouseout=\"story.isCurrentFocus = false\">\n" +
-    "                    <div class=\"bs-callout\" ng-class=\"{ 'bs-callout-warning' : story.isCurrentFocus }\" style=\"position:relative; overflow:hidden;\">\n" +
-    "                        <div style=\"position:absolute; bottom:-32px; right:-8px; font-size:86px; opacity:0.05; font-family:Times New Roman, Times, serif\">{{story.estimate}}</div>\n" +
-    "                        <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"story.isCurrentFocus\" ng-click=\"deleteStory(story.$id)\" style=\"position:absolute; top:0; right:4px;\">&times;</button>\n" +
-    "                        <strong ng-bind-html=\"highlight(story.summary, searchFilter)\"></strong>\n" +
-    "                        <p><small><em ng-bind-html=\"highlight(story.description, searchFilter)\"></em></small></p>\n" +
-    "                        <button class=\"btn btn-primary btn-xs\" ng-click=\"regressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-left\"></span></button>\n" +
-    "                        <button class=\"btn btn-primary btn-xs\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></button>\n" +
-    "                        <a href=\"\" ng-show=\"story.isCurrentFocus\" ng-click=\"showEditStoryUI(story)\">Edit</a>\n" +
+    "                <div class=\"row\" id=\"boardColumns\">\n" +
+    "                    <div class=\"col-md-{{columnWidth}}\" ng-repeat=\"(columnKey, column) in columns\">\n" +
+    "                        <div class=\"well well-sm\">\n" +
+    "                            <div class=\"row\" style=\"padding-bottom:10px;\">\n" +
+    "                                <div class=\"col-sm-12\">\n" +
+    "                                    <p ng-model=\"column.name\"><strong>{{column.name}}</strong> <small ng-click=\"deleteColumn(columnKey)\"><a href=\"\" class=\"glyphicon glyphicon-trash\"></a></small></p>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                            <!--<div class=\"bs-callout\" ng-show=\"(stories | orderByPriority | filter : { columnId:columnKey }).length == 0\" class=\"visible-xs\">-->\n" +
+    "                                <!--<p class=\"text-muted\">There are currently no stories in <strong>\"{{column.name}}\"</strong></p>-->\n" +
+    "                            <!--</div>-->\n" +
+    "                            <ul class=\"list-group\" ng-model=\"stories\"><!-- ui-sortable=\"sortableOptions\" -->\n" +
+    "                                <li href=\"\" class=\"list-group-item clearfix\" ng-repeat=\"(storyKey, story) in stories | orderByPriority | filter : { columnId:columnKey } | filter : searchFilter\" ng-mouseover=\"story.isCurrentFocus = true\" ng-mouseout=\"story.isCurrentFocus = false\">\n" +
+    "                                    <!--<div class=\"bs-callout\" ng-class=\"{ 'bs-callout-warning' : story.isCurrentFocus }\" style=\"position:relative; overflow:hidden;\">-->\n" +
+    "                                        <span class=\"badge\">{{story.estimate}}</span>\n" +
+    "                                        <!--<button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"story.isCurrentFocus\" style=\"position:absolute; top:0; right:4px;\">&times;</button>-->\n" +
+    "                                        <p class=\"list-group-item-heading\"><strong ng-bind-html=\"highlight(story.summary, searchFilter)\"></strong></p>\n" +
+    "                                        <p class=\"list-group-item-text\" ng-bind-html=\"highlight(story.description, searchFilter)\"></p>\n" +
+    "                                        <!--<button class=\"btn btn-primary btn-xs\" ng-click=\"regressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-left\"></span></button>-->\n" +
+    "                                        <!--<button class=\"btn btn-primary btn-xs\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></button>-->\n" +
+    "                                        <div ng-class=\"{ 'invisible' : !story.isCurrentFocus }\" class=\"pull-left\">\n" +
+    "                                            <a href=\"\" ng-click=\"regressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-left\"></span></a>\n" +
+    "                                            <a href=\"\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></a>\n" +
+    "                                            <a href=\"\" ng-click=\"showEditStoryUI(story)\"><span class=\"glyphicon glyphicon-pencil\"></span></a>\n" +
+    "                                        </div>\n" +
+    "                                        <div ng-class=\"{ 'invisible' : !story.isCurrentFocus }\" class=\"pull-right\">\n" +
+    "\n" +
+    "                                            <a href=\"\" ng-click=\"deleteStory(story.$id)\"><span class=\"glyphicon glyphicon-trash\"></span></a>\n" +
+    "                                        </div>\n" +
+    "                                    <!--</div>-->\n" +
+    "                                </li>\n" +
+    "                            </ul>\n" +
+    "                        </div>\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
@@ -175,6 +191,40 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
     "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
     "</div>"
+  );
+
+
+  $templateCache.put('views/login.html',
+    "<div class=\"container\">\n" +
+    "    <div class=\"well well-lg col-sm-6 col-sm-offset-3\">\n" +
+    "        <!--<div class=\"panel-body\">-->\n" +
+    "            <form class=\"form-horizontal\">\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <label class=\"control-label sr-only\">Email Address</label>\n" +
+    "                    <div class=\"col-sm-12\">\n" +
+    "                        <input type=\"text\" ng-model=\"email\" class=\"form-control input-lg\" placeholder=\"Email Address\" />\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <label class=\"control-label sr-only\">Password</label>\n" +
+    "                    <div class=\"col-sm-12\">\n" +
+    "                        <input type=\"password\" ng-model=\"pass\" class=\"form-control input-lg\" placeholder=\"Password\" />\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "                <div class=\"form-group\">\n" +
+    "                    <div class=\"col-sm-12\">\n" +
+    "                        <button type=\"submit\" class=\"btn btn-primary btn-lg btn-block\" ng-click=\"login()\">Login</button>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </form>\n" +
+    "        <!--</div>-->\n" +
+    "    </div>\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('views/loginForm.html',
+    "This is a test"
   );
 
 

@@ -5,6 +5,10 @@ angular.module('getAgileApp')
         $scope.selectedBoardId = $routeParams.boardId;
         $scope.columns = {};
 
+        $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
+            $scope.boardsIndex = new FirebaseIndex(firebaseRef('users/' + user.uid + '/boards'), firebaseRef('boards/'));
+        });
+
         $scope.showNewStoryUI = function() {
             $modal.open({
                 templateUrl: 'views/addNewStory.html',
@@ -40,6 +44,13 @@ angular.module('getAgileApp')
         var stories = syncData('stories/' + $routeParams.boardId);
         stories.$on('loaded', function() {
             $scope.stories = stories;
+        });
+
+        $scope.adminsIndex = new FirebaseIndex(firebaseRef('admins/' + $routeParams.boardId), firebaseRef('users/'));
+
+        $scope.adminsIndex.on('child_added', function(snapshot) {
+            var admin = snapshot.val();
+            $scope.admin = admin;
         });
 
         $scope.highlight = function(html, searchFilter) {
@@ -96,6 +107,18 @@ angular.module('getAgileApp')
 
         $scope.deleteStory = function(storyKey) {
             StoryService.deleteStory($scope.selectedBoardId, storyKey);
+        };
+
+        $scope.addPersonToTeam = function() {
+            $scope.teamsIndex.add($scope.newTeamMemberUserId);
+            $scope.boardsIndex.add($scope.selectedBoardId);
+            $scope.newTeamMemberUserId = '';
+        }
+
+        $scope.removePersonFromTeam = function(userId) {
+            //console.log(userId);
+            $scope.teamsIndex.drop(userId);
+            $scope.boardsIndex.drop($scope.selectedBoardId);
         };
 
         $scope.progressStory = function(columnId, storyId) {
