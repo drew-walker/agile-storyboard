@@ -2,12 +2,76 @@
 
 angular.module('getAgileApp')
     .controller('BoardCtrl', function ($scope, $rootScope, $modal, syncData, firebaseRef, BoardService, ColumnService, StoryService, $routeParams, $firebase, $filter, $sce) {
-        $scope.selectedBoardId = $routeParams.boardId;
-        $scope.columns = {};
+
+        $scope.selectedBoardId = null;
+        $scope.loadBoard = function(boardId) {
+            $scope.selectedBoardId = boardId;
+            $scope.columns = {};
+            $rootScope.$broadcast('changeBoard', $scope.selectedBoardId);
+
+            var selectedBoard = syncData('boards/' + $scope.selectedBoardId);
+            selectedBoard.$on('loaded', function() {
+                $scope.selectedBoard = selectedBoard;
+            })
+
+            var stories = syncData('stories/' + $scope.selectedBoardId);
+            stories.$on('loaded', function() {
+                $scope.stories = stories;
+            });
+
+            $scope.adminsIndex = new FirebaseIndex(firebaseRef('admins/' + $scope.selectedBoardId), firebaseRef('users/'));
+
+            $scope.adminsIndex.on('child_added', function(snapshot) {
+                var admin = snapshot.val();
+                $scope.admin = admin;
+            });
+
+            var columns = syncData('columns/' + $scope.selectedBoardId);
+
+            columns.$on('loaded', function() {
+                $scope.refreshColumns(columns);
+            })
+
+            columns.$on('child_added', function() {
+                $scope.refreshColumns(columns);
+            });
+
+            columns.$on('child_removed', function() {
+                $scope.refreshColumns(columns);
+            });
+        };
+
+        BoardService.getBoardIdFromSlug($routeParams.boardSlug).then($scope.loadBoard);
 
         $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
-            $scope.boardsIndex = new FirebaseIndex(firebaseRef('users/' + user.uid + '/boards'), firebaseRef('boards/'));
+            if ($scope.selectedBoardId === null) {
+                BoardService.getBoardIdFromSlug($routeParams.boardSlug).then($scope.loadBoard);
+            }
         });
+
+        $rootScope.$on("$firebaseSimpleLogin:logout", function(e, user) {
+            $scope.selectedBoardId = null;
+            $scope.columns = {};
+            $scope.selectedBoard = null;
+        });
+
+        $scope.showAttachment = function(attachment) {
+            $modal.open({
+                templateUrl: 'views/attachment.html',
+                controller: function($scope, $modalInstance, attachment) {
+                    $scope.attachment = attachment;
+
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss();
+                    };
+                },
+                resolve: {
+                    attachment: function() {
+                        return attachment;
+                    }
+                }
+            });
+        };
 
         $scope.showNewStoryUI = function() {
             $modal.open({
@@ -34,25 +98,6 @@ angular.module('getAgileApp')
             });
         };
 
-        $rootScope.$broadcast('changeBoard', $routeParams.boardId);
-
-        var selectedBoard = syncData('boards/' + $routeParams.boardId);
-        selectedBoard.$on('loaded', function() {
-            $scope.selectedBoard = selectedBoard;
-        })
-
-        var stories = syncData('stories/' + $routeParams.boardId);
-        stories.$on('loaded', function() {
-            $scope.stories = stories;
-        });
-
-        $scope.adminsIndex = new FirebaseIndex(firebaseRef('admins/' + $routeParams.boardId), firebaseRef('users/'));
-
-        $scope.adminsIndex.on('child_added', function(snapshot) {
-            var admin = snapshot.val();
-            $scope.admin = admin;
-        });
-
         $scope.highlight = function(html, searchFilter) {
             if (html) {
                 return $sce.trustAsHtml($filter('highlight')(html, searchFilter, false));
@@ -60,20 +105,6 @@ angular.module('getAgileApp')
                 return '';
             }
         };
-
-        var columns = syncData('columns/' + $routeParams.boardId);
-
-        columns.$on('loaded', function() {
-            $scope.refreshColumns(columns);
-        })
-
-        columns.$on('child_added', function() {
-            $scope.refreshColumns(columns);
-        });
-
-        columns.$on('child_removed', function() {
-            $scope.refreshColumns(columns);
-        });
 
         $scope.showEditStoryUI = function(story) {
             $modal.open({
@@ -107,18 +138,6 @@ angular.module('getAgileApp')
 
         $scope.deleteStory = function(storyKey) {
             StoryService.deleteStory($scope.selectedBoardId, storyKey);
-        };
-
-        $scope.addPersonToTeam = function() {
-            $scope.teamsIndex.add($scope.newTeamMemberUserId);
-            $scope.boardsIndex.add($scope.selectedBoardId);
-            $scope.newTeamMemberUserId = '';
-        }
-
-        $scope.removePersonFromTeam = function(userId) {
-            //console.log(userId);
-            $scope.teamsIndex.drop(userId);
-            $scope.boardsIndex.drop($scope.selectedBoardId);
         };
 
         $scope.progressStory = function(columnId, storyId) {

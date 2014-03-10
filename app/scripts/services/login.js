@@ -30,7 +30,6 @@ angular.module('getAgileApp')
                 assertAuth();
                 auth.$login('facebook').then(function(user) {
                     firebaseRef('users/' + user.uid).once('value', function(profile) {
-                        console.log(profile.val());
                         if (!profile.val()) {
                             profileCreator(user.uid, "");
                         }

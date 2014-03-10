@@ -3,6 +3,9 @@
 angular.module('getAgileApp')
     .factory('StoryService', function (firebaseRef, syncData, ColumnService) {
         return {
+            draftStory: function(boardId) {
+                return firebaseRef('stories/' + boardId).push();
+            },
             addStory: function(boardId, story) {
                 var column = ColumnService.getFirstColumn(boardId);
                 var boardId = boardId;

@@ -2,16 +2,26 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xs-12">
+                <div class="row" style="margin-bottom:10px">
+                    <div class="col-md-6" ng-controller="TeamCtrl">
+                        <form class="form-inline pull-left">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm" ng-model="newTeamMemberUserId" typeahead-on-select="addPersonToTeam()" typeahead="person.$id as person.name for person in userList | orderByPriority | filter:$viewValue" placeholder="Add Team Member" />
+                            </div>
+                            <div class="btn-group btn-group-sm">
+                                <button ng-repeat="person in team" class="btn btn-default" ng-click="removePersonFromTeam(person.$id)">{{person.name}} <span class="glyphicon glyphicon-remove"></span></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
                         <form class="form-inline pull-right">
                             <div class="form-group has-feedback" ng-show="(stories | orderByPriority).length > 2">
-                                <input ng-model="searchFilter" class="form-control" placeholder="Filter" />
+                                <input ng-model="searchFilter" class="form-control input-sm" placeholder="Filter" />
                                 <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="searchFilter" ng-click="searchFilter=''"></span>
                             </div>
-                            <div class="btn-group">
-                                <button ng-show="selectedBoard" class="btn btn-default navbar-btn" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
-                                <button ng-show="selectedBoard" class="btn btn-primary navbar-btn" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
+                            <div class="btn-group btn-group-sm">
+                                <button ng-show="selectedBoard" class="btn btn-default" ng-click="showNewColumnUI()"><span class="glyphicon glyphicon-plus"></span> Add Column</button>
+                                <button ng-show="selectedBoard" class="btn btn-primary" ng-click="showNewStoryUI()"><span class="glyphicon glyphicon-plus"></span> Add Story</button>
                             </div>
                         </form>
                     </div>
@@ -24,28 +34,30 @@
                                     <p ng-model="column.name"><strong>{{column.name}}</strong> <small ng-click="deleteColumn(columnKey)"><a href="" class="glyphicon glyphicon-trash"></a></small></p>
                                 </div>
                             </div>
-                            <!--<div class="bs-callout" ng-show="(stories | orderByPriority | filter : { columnId:columnKey }).length == 0" class="visible-xs">-->
-                                <!--<p class="text-muted">There are currently no stories in <strong>"{{column.name}}"</strong></p>-->
-                            <!--</div>-->
+                            <div class="bs-callout" ng-show="(stories | orderByPriority | filter : { columnId:columnKey }).length == 0" class="visible-xs">
+                                <p class="text-muted">There are currently no stories in <strong>"{{column.name}}"</strong></p>
+                            </div>
                             <ul class="list-group" ng-model="stories"><!-- ui-sortable="sortableOptions" -->
                                 <li href="" class="list-group-item clearfix" ng-repeat="(storyKey, story) in stories | orderByPriority | filter : { columnId:columnKey } | filter : searchFilter" ng-mouseover="story.isCurrentFocus = true" ng-mouseout="story.isCurrentFocus = false">
-                                    <!--<div class="bs-callout" ng-class="{ 'bs-callout-warning' : story.isCurrentFocus }" style="position:relative; overflow:hidden;">-->
-                                        <span class="badge">{{story.estimate}}</span>
-                                        <!--<button type="button" class="close" aria-hidden="true" ng-show="story.isCurrentFocus" style="position:absolute; top:0; right:4px;">&times;</button>-->
-                                        <p class="list-group-item-heading"><strong ng-bind-html="highlight(story.summary, searchFilter)"></strong></p>
-                                        <p class="list-group-item-text" ng-bind-html="highlight(story.description, searchFilter)"></p>
-                                        <!--<button class="btn btn-primary btn-xs" ng-click="regressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-left"></span></button>-->
-                                        <!--<button class="btn btn-primary btn-xs" ng-click="progressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-right"></span></button>-->
-                                        <div ng-class="{ 'invisible' : !story.isCurrentFocus }" class="pull-left">
-                                            <a href="" ng-click="regressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-left"></span></a>
-                                            <a href="" ng-click="progressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-right"></span></a>
-                                            <a href="" ng-click="showEditStoryUI(story)"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <span class="badge">{{story.estimate}}</span>
+                                    <p class="list-group-item-heading"><strong ng-bind-html="highlight(story.summary, searchFilter)"></strong></p>
+                                    <p class="list-group-item-text" ng-bind-html="highlight(story.description, searchFilter)"></p>
+                                    <div class="row" ng-show="story.attachments">
+                                        <div class="col-md-12">
+                                            <div class="btn-group">
+                                                <button type="button" ng-repeat="attachment in story.attachments" class="btn btn-default" style="background:url(https://s3.amazonaws.com/getagile/{{attachment.name}}) no-repeat center; background-size:100%;" ng-click="showAttachment('https://s3.amazonaws.com/getagile/' + attachment.name)">&nbsp;</button>
+                                            </div>
                                         </div>
-                                        <div ng-class="{ 'invisible' : !story.isCurrentFocus }" class="pull-right">
+                                    </div>
+                                    <div ng-class="{ 'invisible' : !story.isCurrentFocus }" class="pull-left">
+                                        <a href="" ng-click="regressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-left"></span></a>
+                                        <a href="" ng-click="progressStory(columnKey, story.$id)"><span class="glyphicon glyphicon-arrow-right"></span></a>
+                                        <a href="" ng-click="showEditStoryUI(story)"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    </div>
+                                    <div ng-class="{ 'invisible' : !story.isCurrentFocus }" class="pull-right">
 
-                                            <a href="" ng-click="deleteStory(story.$id)"><span class="glyphicon glyphicon-trash"></span></a>
-                                        </div>
-                                    <!--</div>-->
+                                        <a href="" ng-click="deleteStory(story.$id)"><span class="glyphicon glyphicon-trash"></span></a>
+                                    </div>
                                 </li>
                             </ul>
                         </div>

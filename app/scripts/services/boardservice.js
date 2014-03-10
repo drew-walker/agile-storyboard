@@ -1,12 +1,27 @@
 'use strict';
 
 angular.module('getAgileApp')
-  .factory('BoardService', function (firebaseRef, syncData, ColumnService, $q) {
+  .factory('BoardService', function (firebaseRef, syncData, ColumnService, $q, $filter) {
         var boardsReference = firebaseRef('boards');
         var defaultColumns = ColumnService.getDefaultColumns();
         return {
             getBoards: function() {
                 return syncData('boards');
+            },
+            getBoardIdFromSlug: function(slug) {
+                var deferred = $q.defer();
+                var data = firebaseRef('boards');
+                var idFound = false
+                data.on('child_added', function(snapshot) {
+                    if (snapshot.val().slug === slug) {
+                        idFound = true;
+                        deferred.resolve(snapshot.name());
+                    }
+                });
+//                data.on('loaded', function() {
+//                    if (!idFound) deferred.
+//                });
+                return deferred.promise;
             },
             addBoard: function(board) {
                 var deferred = $q.defer();

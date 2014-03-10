@@ -22,19 +22,23 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#/release-notes">GetAgile - 0.1 ALPHA</a>
+                <a class="navbar-brand" href="#/release-notes">GetAgile</a>
             </div>
             <div class="collapse navbar-collapse" id="collapse-1">
-                <ul class="nav navbar-nav hidden-xs">
+                <ul ng-show="userIsLoggedIn" class="nav navbar-nav">
+                    <li><a href="#/dashboard">Dashboard</a></li>
                     <li>
-                        <a href="" ng-cloak class="dropdown-toggle" data-toggle="dropdown">{{selectedBoard.name}} <b class="caret"></b></a>
+                        <a href="" ng-cloak class="dropdown-toggle" data-toggle="dropdown"><strong>Board</strong><span ng-show="selectedBoard">: {{selectedBoard.name}}</span> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{key}}"><span ng-show="key==selectedBoardId" class="glyphicon glyphicon-ok"></span> {{board.name}}</a></li>
+                            <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{board.slug}}"><span ng-show="key==selectedBoardId" class="glyphicon glyphicon-ok"></span> {{board.name}}</a></li>
                             <li role="presentation" class="divider"></li>
                             <li ng-class="{ 'disabled' : !userIsLoggedIn }"><a href="" ng-click="showNewStoryboardUI()">Add New Storyboard</a></li>
                         </ul>
                     </li>
                 </ul>
+                <div ng-show="userIsLoggedIn" class="navbar-header pull-left">
+                    <button ng-show="selectedBoard && userIsLoggedIn" class="btn btn-danger navbar-btn hidden-xs" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                </div>
                 <ul class="nav navbar-nav visible-xs">
                     <li>
                         <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{key}}"><span ng-show="key==selectedBoardId" class="glyphicon glyphicon-ok"></span> {{board.name}}</a></li>
@@ -42,7 +46,6 @@
                         <li><a href="" ng-click="auth.$logout()">Logout</a></li>
                     </li>
                 </ul>
-                <!--<button ng-show="selectedBoard && userIsLoggedIn" class="btn btn-danger navbar-btn hidden-xs" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>-->
                 <div class="navbar-right hidden-xs" ng-controller="QuickLoginCtrl">
                     <div class="navbar-right" ng-show="auth.user" style="margin-left:15px">
                         <img ng-src="{{profileImageUrl}}" />
@@ -53,7 +56,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#/profile/{{auth.user.uid}}">Profile</a></li>
                                 <li role="presentation" class="divider"></li>
-                                <li><a href="" ng-click="auth.$logout()">Logout</a></li>
+                                <li><a href="" ng-click="logout()">Logout</a></li>
                             </ul>
                         </li>
                         <li ng-hide="auth.user">
@@ -61,7 +64,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="" ng-click="loginWithFacebook()">with Facebook</a></li>
                                 <li><a href="" ng-click="auth.$login('twitter')">with Twitter</a></li>
-                                <li><a href="" ng-click="login()">with Email &amp; Password</a></li>
+                                <li><a href="" ng-click="showLoginUI()">with Email &amp; Password</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -70,26 +73,31 @@
         </div>
     </nav>
     <div ng-view></div>
-    <div id="footer">
-        <div style="padding:0 15px" ng-controller="TeamCtrl">
-            <div ng-show="team.length > 0">
-                <p>This board is shared with <span ng-repeat="person in team" class="btn btn-default btn-sm" ng-click="removePersonFromTeam(person.$id)">{{person.name}} <span class="glyphicon glyphicon-remove"></span></span></p>
-            </div>
-        <!--<div ng-show="team.length == 0">-->
-            <!--<p>This board is not shared.</p>-->
-        <!--</div>-->
-        <!--<p>The admin of this board is {{admin.name}}.</p>-->
-        <!--<form class="form-inline">-->
-            <!--<div class="form-group">-->
-                <!--<input type="text" class="form-control input-sm" ng-model="newTeamMemberUserId" />-->
+    <!--<div id="footer" style="padding:15px;">-->
+        <!--<div class="container-fluid">-->
+            <!--<div class="row" ng-controller="TeamCtrl">-->
+                <!--<div class="col-md-6">-->
+                    <!--<span ng-show="team.length > 0">This board is shared with <span ng-repeat="person in team" class="btn btn-default btn-sm" ng-click="removePersonFromTeam(person.$id)">{{person.name}} <span class="glyphicon glyphicon-remove"></span></span></span>-->
+                    <!--<div ng-show="team.length == 0">-->
+                        <!--<p>This board is not shared.</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-md-6">-->
+                    <!--<form class="form-inline">-->
+                        <!--<div class="form-group">-->
+                            <!--<input type="text" class="form-control input-sm" ng-model="newTeamMemberUserId" />-->
+                        <!--</div>-->
+                        <!--<button type="submit" class="btn btn-default btn-sm" ng-click="addPersonToTeam()">Share</button>-->
+                    <!--</form>-->
+                <!--</div>-->
+
+                <!--&lt;!&ndash;<p>The admin of this board is {{admin.name}}.</p>&ndash;&gt;-->
             <!--</div>-->
-            <!--<button type="submit" class="btn btn-default btn-sm" ng-click="addPersonToTeam()">Share</button>-->
-        <!--</form>-->
-        </div>
-    </div>
+        <!--</div>-->
+    <!--</div>-->
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
@@ -99,8 +107,10 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+    <script src="bower_components/socket.io-client/dist/socket.io.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -131,6 +141,8 @@
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/LoginForm.js"></script>
     <script src="scripts/controllers/Team.js"></script>
+    <script src="scripts/libraries/socket.io-stream.js"></script>
+    <script src="scripts/directives/DragAndDropFileUpload.js"></script>
     <!-- endbuild -->
 </body>
 </html>

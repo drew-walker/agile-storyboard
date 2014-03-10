@@ -4,13 +4,13 @@ angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.fireba
 
         $routeProvider.when('/boards', {
             templateUrl: 'views/board.html',
-            controller: function($location, BoardService) {
+            controller: function($scope, $location, BoardService) {
                 var firstBoard = BoardService.getFirstBoard();
                 firstBoard.$on("loaded", function(snapshot) {
-                    $location.path("/boards/" + firstBoard.$getIndex()[0]);
+                    $location.path("/boards/" + firstBoard[firstBoard.$getIndex()[0]].slug);
                 });
             }
-        }).when('/boards/:boardId', {
+        }).when('/boards/:boardSlug', {
             templateUrl: 'views/board.html',
             controller: 'BoardCtrl'
         }).when('/dashboard', {
@@ -25,8 +25,6 @@ angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.fireba
         }).when('/login', {
             templateUrl: 'views/login.html',
             controller: 'LoginCtrl'
-        }).otherwise({
-            redirectTo: '/boards'
         });
 
     });

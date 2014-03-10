@@ -15,10 +15,22 @@ angular.module('getAgileApp')
             });
         };
 
+        $scope.showLoginUI = function() {
+            $modal.open({
+                templateUrl: 'views/loginForm.html',
+                controller: 'LoginFormCtrl',
+                backdrop: 'static'
+            });
+        };
+
         $scope.loginWithFacebook = function() {
             loginService.loginWithFacebook();
         };
 
+        $scope.logout = function() {
+            loginService.logout();
+            $location.path('/login');
+        };
 
         $scope.createAccount = function() {
             $scope.err = null;
@@ -36,26 +48,24 @@ angular.module('getAgileApp')
         };
 
         $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
-            switch ($scope.auth.user.provider) {
+            switch (user.provider) {
                 case "twitter":
-                    $scope.profileImageUrl = $scope.auth.user.profile_image_url;
-                    $scope.userName = $scope.auth.user.name;
+                    $scope.profileImageUrl = user.profile_image_url;
+                    $scope.userName = user.name;
                     break;
                 case "facebook":
-                    $scope.profileImageUrl = "http://graph.facebook.com/" + $scope.auth.user.username + "/picture";
-                    $scope.userName = $scope.auth.user.name;
+                    $scope.profileImageUrl = "http://graph.facebook.com/" + user.username + "/picture";
+                    $scope.userName = user.name;
                     break;
                 case "password":
                     $scope.profileImageUrl = null;
-                    var userRef = syncData('users/' + $scope.auth.user.uid);
+                    var userRef = syncData('users/' + user.uid);
                     userRef.$on("loaded", function() {
                         $scope.userName = userRef.name;
                     });
-
                     userRef.$on("change", function() {
                         $scope.userName = userRef.name;
                     });
-
                     break;
             }
         });

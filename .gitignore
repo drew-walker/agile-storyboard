@@ -15,5 +15,6 @@ npm-debug.log
 node_modules
 app/bower_components
 .tmp
+.env
 dist
 app/newrelic.js

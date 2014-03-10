@@ -1,10 +1,21 @@
 'use strict';
 
 angular.module('getAgileApp')
-    .controller('TeamCtrl', function ($scope, firebaseRef, $rootScope) {
-        $scope.team = [];
+    .controller('TeamCtrl', function ($scope, firebaseRef, syncData, $rootScope) {
+        $scope.userList = syncData('users/');
+
+        $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
+            $scope.team = [];
+            $scope.boardsIndex = new FirebaseIndex(firebaseRef('users/' + user.uid + '/boards'), firebaseRef('boards/'));
+        });
+
+        $rootScope.$on("$firebaseSimpleLogin:logout", function(e, user) {
+            $scope.team = [];
+        });
 
         $rootScope.$on('changeBoard', function(event, boardId) {
+            $scope.team = [];
+
             $scope.selectedBoardId = boardId;
 
             $scope.teamsIndex = new FirebaseIndex(firebaseRef('teams/' + $scope.selectedBoardId), firebaseRef('users/'));
@@ -26,7 +37,22 @@ angular.module('getAgileApp')
             });
         });
 
+//        $scope.teamMemberClicked = function() {
+//            console.log($scope.newTeamMemberUserId);
+//        };
 
+        $scope.addPersonToTeam = function() {
+            $scope.teamsIndex.add($scope.newTeamMemberUserId);
+            firebaseRef('users/' + $scope.newTeamMemberUserId + '/boards/' + $scope.selectedBoardId).set(1);
+            //$scope.boardsIndex.add($scope.selectedBoardId);
+            $scope.newTeamMemberUserId = '';
+        };
 
+        $scope.removePersonFromTeam = function(userId) {
+            //console.log(userId);
+            $scope.teamsIndex.drop(userId);
+            firebaseRef('users/' + userId + '/boards/' + $scope.selectedBoardId).remove();
+            //$scope.boardsIndex.drop($scope.selectedBoardId);
+        };
 
     });

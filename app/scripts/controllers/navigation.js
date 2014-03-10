@@ -2,24 +2,35 @@
 
 angular.module('getAgileApp')
     .controller('NavigationCtrl', function ($scope, $rootScope, syncData, firebaseRef, $modal, BoardService, $location) {
-        $scope.boards = syncData('boards');
-        //$scope.boards = [];
+        $scope.boards = [];
 
         $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
+            $scope.boards = [];
+
             $scope.userIsLoggedIn = true;
 
             $scope.boardsIndex = new FirebaseIndex(firebaseRef('users/' + user.uid + '/boards'), firebaseRef('boards/'));
 
             $scope.boardsIndex.on('child_added', function(snapshot) {
-                //$scope.boards = $scope.boardsIndex.dataRef;
+                var board = snapshot.val();
+                board.$id = snapshot.name();
+                $scope.$apply(function() {
+                    $scope.boards.push(board);
+                })
+            });
 
-                //console.log($scope.boardsIndex.childRefs);
-                //$scope.boards.push(snapshot.val());
+            $scope.boardsIndex.on('child_removed', function(snapshot) {
+                $scope.$apply(function() {
+                    $scope.boards = $scope.boards.filter(function(board) {
+                        return board.$id !== snapshot.name();
+                    });
+                });
             });
         });
 
         $rootScope.$on("$firebaseSimpleLogin:logout", function(e, user) {
             $scope.userIsLoggedIn = false;
+            $scope.boards = [];
         });
 
         $rootScope.$on('changeBoard', function(event, boardId) {

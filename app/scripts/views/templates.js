@@ -48,6 +48,12 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "                <textarea class=\"form-control\" id=\"storyDescription\" ng-model=\"newStory.description\" rows=\"6\"></textarea>\n" +
     "            </div>\n" +
     "        </div>\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <label class=\"control-label col-sm-3\">Attachments</label>\n" +
+    "            <div class=\"col-sm-9\">\n" +
+    "                <div class=\"drag-and-drop-file-upload\" on-file-drop=\"changeFile()\" ng-model=\"temporary.attachmentFiles\"></div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
     "    </form>\n" +
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
@@ -70,6 +76,12 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "                <input type=\"text\" class=\"form-control\" id=\"storyboardName\" name=\"storyboardName\" ng-model=\"newStoryboard.name\" required focus ui-keypress=\"{13:'add()'}\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <label class=\"control-label col-sm-3\" for=\"storyboardSlug\">URL</label>\n" +
+    "            <div class=\"col-sm-9\">\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"storyboardSlug\" name=\"storyboardSlug\" ng-model=\"newStoryboard.slug\" required focus ui-keypress=\"{13:'add()'}\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
     "    </form>\n" +
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
@@ -79,21 +91,42 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
   );
 
 
+  $templateCache.put('views/attachment.html',
+    "<div class=\"modal-header\">\n" +
+    "    <button type=\"button\" class=\"close\" ng-click=\"cancel()\" aria-hidden=\"true\">&times;</button>\n" +
+    "    <h4 class=\"modal-title\">Attachment</h4>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body text-center\">\n" +
+    "    <img ng-src=\"{{attachment}}\" />\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('views/board.html',
     "<div style=\"padding:0 15px;\">\n" +
     "    <div class=\"row\">\n" +
     "        <div class=\"col-sm-12\">\n" +
     "            <div class=\"container-fluid\">\n" +
-    "                <div class=\"row\">\n" +
-    "                    <div class=\"col-xs-12\">\n" +
+    "                <div class=\"row\" style=\"margin-bottom:10px\">\n" +
+    "                    <div class=\"col-md-6\" ng-controller=\"TeamCtrl\">\n" +
+    "                        <form class=\"form-inline pull-left\">\n" +
+    "                            <div class=\"form-group\">\n" +
+    "                                <input type=\"text\" class=\"form-control input-sm\" ng-model=\"newTeamMemberUserId\" typeahead-on-select=\"addPersonToTeam()\" typeahead=\"person.$id as person.name for person in userList | orderByPriority | filter:$viewValue\" placeholder=\"Add Team Member\" />\n" +
+    "                            </div>\n" +
+    "                            <div class=\"btn-group btn-group-sm\">\n" +
+    "                                <button ng-repeat=\"person in team\" class=\"btn btn-default\" ng-click=\"removePersonFromTeam(person.$id)\">{{person.name}} <span class=\"glyphicon glyphicon-remove\"></span></button>\n" +
+    "                            </div>\n" +
+    "                        </form>\n" +
+    "                    </div>\n" +
+    "                    <div class=\"col-md-6\">\n" +
     "                        <form class=\"form-inline pull-right\">\n" +
     "                            <div class=\"form-group has-feedback\" ng-show=\"(stories | orderByPriority).length > 2\">\n" +
-    "                                <input ng-model=\"searchFilter\" class=\"form-control\" placeholder=\"Filter\" />\n" +
+    "                                <input ng-model=\"searchFilter\" class=\"form-control input-sm\" placeholder=\"Filter\" />\n" +
     "                                <span class=\"glyphicon glyphicon-remove form-control-feedback\" ng-show=\"searchFilter\" ng-click=\"searchFilter=''\"></span>\n" +
     "                            </div>\n" +
-    "                            <div class=\"btn-group\">\n" +
-    "                                <button ng-show=\"selectedBoard\" class=\"btn btn-default navbar-btn\" ng-click=\"showNewColumnUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Column</button>\n" +
-    "                                <button ng-show=\"selectedBoard\" class=\"btn btn-primary navbar-btn\" ng-click=\"showNewStoryUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Story</button>\n" +
+    "                            <div class=\"btn-group btn-group-sm\">\n" +
+    "                                <button ng-show=\"selectedBoard\" class=\"btn btn-default\" ng-click=\"showNewColumnUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Column</button>\n" +
+    "                                <button ng-show=\"selectedBoard\" class=\"btn btn-primary\" ng-click=\"showNewStoryUI()\"><span class=\"glyphicon glyphicon-plus\"></span> Add Story</button>\n" +
     "                            </div>\n" +
     "                        </form>\n" +
     "                    </div>\n" +
@@ -106,28 +139,30 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "                                    <p ng-model=\"column.name\"><strong>{{column.name}}</strong> <small ng-click=\"deleteColumn(columnKey)\"><a href=\"\" class=\"glyphicon glyphicon-trash\"></a></small></p>\n" +
     "                                </div>\n" +
     "                            </div>\n" +
-    "                            <!--<div class=\"bs-callout\" ng-show=\"(stories | orderByPriority | filter : { columnId:columnKey }).length == 0\" class=\"visible-xs\">-->\n" +
-    "                                <!--<p class=\"text-muted\">There are currently no stories in <strong>\"{{column.name}}\"</strong></p>-->\n" +
-    "                            <!--</div>-->\n" +
+    "                            <div class=\"bs-callout\" ng-show=\"(stories | orderByPriority | filter : { columnId:columnKey }).length == 0\" class=\"visible-xs\">\n" +
+    "                                <p class=\"text-muted\">There are currently no stories in <strong>\"{{column.name}}\"</strong></p>\n" +
+    "                            </div>\n" +
     "                            <ul class=\"list-group\" ng-model=\"stories\"><!-- ui-sortable=\"sortableOptions\" -->\n" +
     "                                <li href=\"\" class=\"list-group-item clearfix\" ng-repeat=\"(storyKey, story) in stories | orderByPriority | filter : { columnId:columnKey } | filter : searchFilter\" ng-mouseover=\"story.isCurrentFocus = true\" ng-mouseout=\"story.isCurrentFocus = false\">\n" +
-    "                                    <!--<div class=\"bs-callout\" ng-class=\"{ 'bs-callout-warning' : story.isCurrentFocus }\" style=\"position:relative; overflow:hidden;\">-->\n" +
-    "                                        <span class=\"badge\">{{story.estimate}}</span>\n" +
-    "                                        <!--<button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"story.isCurrentFocus\" style=\"position:absolute; top:0; right:4px;\">&times;</button>-->\n" +
-    "                                        <p class=\"list-group-item-heading\"><strong ng-bind-html=\"highlight(story.summary, searchFilter)\"></strong></p>\n" +
-    "                                        <p class=\"list-group-item-text\" ng-bind-html=\"highlight(story.description, searchFilter)\"></p>\n" +
-    "                                        <!--<button class=\"btn btn-primary btn-xs\" ng-click=\"regressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-left\"></span></button>-->\n" +
-    "                                        <!--<button class=\"btn btn-primary btn-xs\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></button>-->\n" +
-    "                                        <div ng-class=\"{ 'invisible' : !story.isCurrentFocus }\" class=\"pull-left\">\n" +
-    "                                            <a href=\"\" ng-click=\"regressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-left\"></span></a>\n" +
-    "                                            <a href=\"\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></a>\n" +
-    "                                            <a href=\"\" ng-click=\"showEditStoryUI(story)\"><span class=\"glyphicon glyphicon-pencil\"></span></a>\n" +
+    "                                    <span class=\"badge\">{{story.estimate}}</span>\n" +
+    "                                    <p class=\"list-group-item-heading\"><strong ng-bind-html=\"highlight(story.summary, searchFilter)\"></strong></p>\n" +
+    "                                    <p class=\"list-group-item-text\" ng-bind-html=\"highlight(story.description, searchFilter)\"></p>\n" +
+    "                                    <div class=\"row\" ng-show=\"story.attachments\">\n" +
+    "                                        <div class=\"col-md-12\">\n" +
+    "                                            <div class=\"btn-group\">\n" +
+    "                                                <button type=\"button\" ng-repeat=\"attachment in story.attachments\" class=\"btn btn-default\" style=\"background:url(https://s3.amazonaws.com/getagile/{{attachment.name}}) no-repeat center; background-size:100%;\" ng-click=\"showAttachment('https://s3.amazonaws.com/getagile/' + attachment.name)\">&nbsp;</button>\n" +
+    "                                            </div>\n" +
     "                                        </div>\n" +
-    "                                        <div ng-class=\"{ 'invisible' : !story.isCurrentFocus }\" class=\"pull-right\">\n" +
+    "                                    </div>\n" +
+    "                                    <div ng-class=\"{ 'invisible' : !story.isCurrentFocus }\" class=\"pull-left\">\n" +
+    "                                        <a href=\"\" ng-click=\"regressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-left\"></span></a>\n" +
+    "                                        <a href=\"\" ng-click=\"progressStory(columnKey, story.$id)\"><span class=\"glyphicon glyphicon-arrow-right\"></span></a>\n" +
+    "                                        <a href=\"\" ng-click=\"showEditStoryUI(story)\"><span class=\"glyphicon glyphicon-pencil\"></span></a>\n" +
+    "                                    </div>\n" +
+    "                                    <div ng-class=\"{ 'invisible' : !story.isCurrentFocus }\" class=\"pull-right\">\n" +
     "\n" +
-    "                                            <a href=\"\" ng-click=\"deleteStory(story.$id)\"><span class=\"glyphicon glyphicon-trash\"></span></a>\n" +
-    "                                        </div>\n" +
-    "                                    <!--</div>-->\n" +
+    "                                        <a href=\"\" ng-click=\"deleteStory(story.$id)\"><span class=\"glyphicon glyphicon-trash\"></span></a>\n" +
+    "                                    </div>\n" +
     "                                </li>\n" +
     "                            </ul>\n" +
     "                        </div>\n" +
@@ -157,6 +192,24 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('views/dashboard.html',
     "<p>This is the dashboard view.</p>\n"
+  );
+
+
+  $templateCache.put('views/dragAndDropFileUpload.html',
+    "<div class=\"row\">\n" +
+    "    <div class=\"col-md-12\">\n" +
+    "        <div class=\"dropZone\" style=\"border:4px dashed #ccc; color:#ccc; width:100%; height:58px; text-align:center; line-height:50px; margin-bottom:10px;\">\n" +
+    "            Drop files here\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>\n" +
+    "<div class=\"row\">\n" +
+    "    <div class=\"col-xs-6 col-md-2\" ng-repeat=\"attachment in attachments\">\n" +
+    "        <a href=\"\" class=\"thumbnail\">\n" +
+    "            <img ng-src=\"{{attachment}}\" />\n" +
+    "        </a>\n" +
+    "    </div>\n" +
+    "</div>"
   );
 
 
@@ -224,7 +277,30 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/loginForm.html',
-    "This is a test"
+    "<div class=\"modal-header\">\n" +
+    "    <button type=\"button\" class=\"close\" ng-click=\"cancel()\" aria-hidden=\"true\">&times;</button>\n" +
+    "    <h4 class=\"modal-title\" id=\"addColumnLabel\">Login</h4>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <form class=\"form-horizontal\" role=\"form\">\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <label class=\"control-label col-sm-3\" for=\"emailAddress\">Username</label>\n" +
+    "            <div class=\"col-sm-9\">\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"emailAddress\" ng-model=\"credentials.emailAddress\" focus />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <label class=\"control-label col-sm-3\" for=\"password\">Password</label>\n" +
+    "            <div class=\"col-sm-9\">\n" +
+    "                <input type=\"password\" class=\"form-control\" id=\"password\" ng-model=\"credentials.password\" ui-keypress=\"{13:'login()'}\" />\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </form>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
+    "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"login()\">Login</button>\n" +
+    "</div>"
   );
 
 
@@ -262,7 +338,7 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "        <li>Ability to schedule sprints.</li>\n" +
     "        <li>Burndown reporting.</li>\n" +
     "    </ul>\n" +
-    "    <h2>What's Available in 0.1 ALPHA</h2>\n" +
+    "    <h2>What's Available in 0.1a</h2>\n" +
     "    <ul>\n" +
     "        <li>Login via Facebook.</li>\n" +
     "        <li>Ability to add storyboards.</li>\n" +
