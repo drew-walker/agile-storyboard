@@ -3,7 +3,10 @@
 describe('Controller: AddStoryCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('getAgileApp'));
+  beforeEach(module('getAgileApp', function($provide) {
+      $provide.value('selectedBoardId', 'abc-123');
+      $provide.value('io', { connect: function() {} });
+  }));
 
   var AddStoryCtrl,
     scope,

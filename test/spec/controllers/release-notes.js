@@ -3,7 +3,7 @@
 describe('Controller: ReleaseNotesCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('agileStoryboardApp'));
+  beforeEach(module('getAgileApp'));
 
   var ReleaseNotesCtrl,
     scope;

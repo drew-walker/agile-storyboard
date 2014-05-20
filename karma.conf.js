@@ -19,6 +19,7 @@ module.exports = function(config) {
             'app/bower_components/angularfire/angularfire.min.js',
             'app/bower_components/angular-ui-sortable/sortable.min.js',
             'app/bower_components/angular-bootstrap/ui-bootstrap.min.js',
+            'app/bower_components/angular-ui-utils/ui-utils.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             'test/spec/**/*.js'
@@ -48,7 +49,7 @@ module.exports = function(config) {
         // - Safari (only Mac)
         // - PhantomJS
         // - IE (only Windows)
-        browsers: ['Chrome'],
+        browsers: ['PhantomJS'],
 
 
         // Continuous Integration mode

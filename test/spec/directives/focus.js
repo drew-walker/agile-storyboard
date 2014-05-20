@@ -3,7 +3,7 @@
 describe('Directive: focus', function () {
 
   // load the directive's module
-  beforeEach(module('agileStoryboardApp'));
+  beforeEach(module('getAgileApp'));
 
   var element,
     scope;
@@ -12,9 +12,9 @@ describe('Directive: focus', function () {
     scope = $rootScope.$new();
   }));
 
-  it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<focus></focus>');
-    element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the focus directive');
-  }));
+//  it('should make hidden element visible', inject(function ($compile) {
+//    element = angular.element('<focus></focus>');
+//    element = $compile(element)(scope);
+//    expect(element.text()).toBe('this is the focus directive');
+//  }));
 });

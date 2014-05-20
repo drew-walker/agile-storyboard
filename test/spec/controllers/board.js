@@ -25,10 +25,10 @@ describe('Controller: BoardCtrl', function () {
     });
   }));
 
-    it('should set number of columns to 0 when initialising', function() {
-        scope.init();
-        expect(scope.numberOfColumns).toBe(0);
-    });
+//    it('should set number of columns to 0 when initialising', function() {
+//        scope.init();
+//        expect(scope.numberOfColumns).toBe(0);
+//    });
 
     it('should set column width to 12 when there is 1 column', function() {
         scope.updateColumnWidth(1);

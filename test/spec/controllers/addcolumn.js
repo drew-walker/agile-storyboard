@@ -3,7 +3,9 @@
 describe('Controller: AddColumnCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('getAgileApp'));
+  beforeEach(module('getAgileApp', function($provide) {
+      $provide.value('selectedBoardId', 'abc-123');
+  }));
 
   var AddColumnCtrl,
     scope;

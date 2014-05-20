@@ -12,7 +12,7 @@ angular.module('getAgileApp')
             var selectedBoard = syncData('boards/' + $scope.selectedBoardId);
             selectedBoard.$on('loaded', function() {
                 $scope.selectedBoard = selectedBoard;
-            })
+            });
 
             var stories = syncData('stories/' + $scope.selectedBoardId);
             stories.$on('loaded', function() {
@@ -30,7 +30,7 @@ angular.module('getAgileApp')
 
             columns.$on('loaded', function() {
                 $scope.refreshColumns(columns);
-            })
+            });
 
             columns.$on('child_added', function() {
                 $scope.refreshColumns(columns);
@@ -43,13 +43,13 @@ angular.module('getAgileApp')
 
         BoardService.getBoardIdFromSlug($routeParams.boardSlug).then($scope.loadBoard);
 
-        $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
+        $rootScope.$on('$firebaseSimpleLogin:login', function() {
             if ($scope.selectedBoardId === null) {
                 BoardService.getBoardIdFromSlug($routeParams.boardSlug).then($scope.loadBoard);
             }
         });
 
-        $rootScope.$on("$firebaseSimpleLogin:logout", function(e, user) {
+        $rootScope.$on('$firebaseSimpleLogin:logout', function() {
             $scope.selectedBoardId = null;
             $scope.columns = {};
             $scope.selectedBoard = null;

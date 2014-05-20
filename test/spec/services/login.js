@@ -3,7 +3,7 @@
 describe('Service: login', function () {
 
   // load the service's module
-  beforeEach(module('agileStoryboardApp'));
+  beforeEach(module('getAgileApp'));
 
   // instantiate service
   var login;

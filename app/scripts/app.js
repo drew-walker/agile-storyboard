@@ -1,3 +1,4 @@
+'use strict';
 
 angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.firebase', 'firebase', 'ui.sortable', 'ui.utils', 'ui.bootstrap', 'ngRoute'])
     .config(function($routeProvider) {
@@ -6,8 +7,8 @@ angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.fireba
             templateUrl: 'views/board.html',
             controller: function($scope, $location, BoardService) {
                 var firstBoard = BoardService.getFirstBoard();
-                firstBoard.$on("loaded", function(snapshot) {
-                    $location.path("/boards/" + firstBoard[firstBoard.$getIndex()[0]].slug);
+                firstBoard.$on('loaded', function() {
+                    $location.path('/boards/' + firstBoard[firstBoard.$getIndex()[0]].slug);
                 });
             }
         }).when('/boards/:boardSlug', {
@@ -25,6 +26,8 @@ angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.fireba
         }).when('/login', {
             templateUrl: 'views/login.html',
             controller: 'LoginCtrl'
+        }).otherwise({
+            redirectTo: '/login'
         });
 
     });
