@@ -6,13 +6,17 @@ describe('Controller: BoardCtrl', function () {
   beforeEach(module('getAgileApp'));
 
   var StoryboardCtrl,
+      modal,
+      window,
       scope,
       BoardService,
       ColumnService,
       StoryService;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, _BoardService_, _ColumnService_, _StoryService_) {
+  beforeEach(inject(function ($controller, $rootScope, $modal, _BoardService_, _ColumnService_, _StoryService_, $window) {
+    modal = $modal;
+    window = $window;
     scope = $rootScope.$new();
     BoardService = _BoardService_;
     ColumnService = _ColumnService_;
@@ -29,6 +33,18 @@ describe('Controller: BoardCtrl', function () {
 //        scope.init();
 //        expect(scope.numberOfColumns).toBe(0);
 //    });
+
+    it('should call $window.confirm when deleteStory is called', function() {
+        spyOn(window, 'confirm');
+        scope.deleteStory();
+        expect(window.confirm).toHaveBeenCalled();
+    });
+
+    it('should call $window.confirm when deleteColumn is called', function() {
+        spyOn(window, 'confirm');
+        scope.deleteColumn();
+        expect(window.confirm).toHaveBeenCalled();
+    });
 
     it('should set column width to 12 when there is 1 column', function() {
         scope.updateColumnWidth(1);

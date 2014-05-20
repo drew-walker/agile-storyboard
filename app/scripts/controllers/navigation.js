@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('getAgileApp')
-    .controller('NavigationCtrl', function ($scope, $rootScope, syncData, firebaseRef, $modal, BoardService, $location) {
+    .controller('NavigationCtrl', function ($scope, $rootScope, syncData, firebaseRef, $modal, BoardService, $location, $window) {
         $scope.boards = [];
 
         $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
@@ -46,8 +46,10 @@ angular.module('getAgileApp')
         };
 
         $scope.deleteStoryboard = function() {
-            BoardService.deleteBoard($scope.selectedBoardId);
-            $location.path('/boards');
+            if ($window.confirm('Are you sure you want to delete this board?')) {
+                BoardService.deleteBoard($scope.selectedBoardId);
+                $location.path('/boards');
+            }
         };
 
         $scope.changeBoards = function(boardId) {

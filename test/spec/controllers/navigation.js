@@ -6,17 +6,21 @@ describe('Controller: NavigationCtrl', function () {
   beforeEach(module('getAgileApp'));
 
   var NavigationCtrl,
+    window,
     scope;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $window) {
+    window = $window;
     scope = $rootScope.$new();
     NavigationCtrl = $controller('NavigationCtrl', {
       $scope: scope
     });
   }));
 
-//  it('should attach a list of awesomeThings to the scope', function () {
-//    expect(scope.awesomeThings.length).toBe(3);
-//  });
+  it('should call $window.confirm before deleting a storyboard', function () {
+    spyOn(window, 'confirm');
+    scope.deleteStoryboard();
+    expect(window.confirm).toHaveBeenCalled();
+  });
 });

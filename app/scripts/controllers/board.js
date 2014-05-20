@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('getAgileApp')
-    .controller('BoardCtrl', function ($scope, $rootScope, $modal, syncData, firebaseRef, BoardService, ColumnService, StoryService, $routeParams, $firebase, $filter, $sce) {
+    .controller('BoardCtrl', function ($scope, $rootScope, $modal, syncData, firebaseRef, BoardService, ColumnService, StoryService, $routeParams, $firebase, $filter, $sce, $window) {
 
         $scope.selectedBoardId = null;
         $scope.loadBoard = function(boardId) {
@@ -133,11 +133,15 @@ angular.module('getAgileApp')
         };
 
         $scope.deleteColumn = function(columnKey) {
-            ColumnService.deleteColumn($scope.selectedBoardId, columnKey);
+            if ($window.confirm('Are you sure you want to delete this column?')) {
+                ColumnService.deleteColumn($scope.selectedBoardId, columnKey);
+            }
         };
 
         $scope.deleteStory = function(storyKey) {
-            StoryService.deleteStory($scope.selectedBoardId, storyKey);
+            if ($window.confirm('Are you sure you want to delete this story?')) {
+                StoryService.deleteStory($scope.selectedBoardId, storyKey);
+            }
         };
 
         $scope.progressStory = function(columnId, storyId) {
