@@ -1,4 +1,6 @@
-agile-storyboard
+Get Agile
 ================
 
-An interactive agile storyboard built for bower.
+An open source agile storyboard built on Firebase.
+
+http://getagile.herokuapp.com/
