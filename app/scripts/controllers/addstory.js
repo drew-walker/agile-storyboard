@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('getAgileApp')
-    .controller('AddStoryCtrl', function ($scope, $modalInstance, StoryService, selectedBoardId, io) {
+    .controller('AddStoryCtrl', function ($scope, $modalInstance, StoryService, selectedBoardId, socket) {
         var storyRef = StoryService.draftStory();
         var storyId = storyRef.name();
         console.log(storyId);
@@ -11,8 +11,6 @@ angular.module('getAgileApp')
         };
 
         $scope.temporary = {};
-
-        var socket = io.connect('/upload');
 
         $scope.add = function() {
             StoryService.addStory(selectedBoardId, $scope.newStory);

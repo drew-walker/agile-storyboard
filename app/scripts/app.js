@@ -30,4 +30,7 @@ angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.fireba
             redirectTo: '/login'
         });
 
+    })
+    .factory('socket', function() {
+        return io.connect('/upload');
     });

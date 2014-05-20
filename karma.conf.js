@@ -20,6 +20,7 @@ module.exports = function(config) {
             'app/bower_components/angular-ui-sortable/sortable.min.js',
             'app/bower_components/angular-bootstrap/ui-bootstrap.min.js',
             'app/bower_components/angular-ui-utils/ui-utils.js',
+            'app/bower_components/socket.io-client/dist/socket.io.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
             'test/spec/**/*.js'
