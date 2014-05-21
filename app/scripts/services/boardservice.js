@@ -28,7 +28,7 @@ angular.module('getAgileApp')
                 var newBoard = boardsReference.push();
                 newBoard.set(board, function() {
                     var boardId = newBoard.name();
-                    deferred.resolve(boardId);
+                    deferred.resolve({ 'boardId' : boardId, 'slug' : board.slug });
                     ColumnService.addColumns(boardId, defaultColumns);
                 });
                 return deferred.promise;

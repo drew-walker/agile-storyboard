@@ -73,13 +73,13 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "        <div class=\"form-group\" ng-class=\"{ 'has-error' : AddStoryboardForm.storyboardName.$invalid }\">\n" +
     "            <label class=\"control-label col-sm-3\" for=\"storyboardName\">Name</label>\n" +
     "            <div class=\"col-sm-9\">\n" +
-    "                <input type=\"text\" class=\"form-control\" id=\"storyboardName\" name=\"storyboardName\" ng-model=\"newStoryboard.name\" required focus ui-keypress=\"{13:'add()'}\" />\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"storyboardName\" name=\"storyboardName\" ng-model=\"newStoryboard.name\" required focus ui-keypress=\"{13:'add(newStoryboard, auth.user.uid)'}\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "        <div class=\"form-group\">\n" +
     "            <label class=\"control-label col-sm-3\" for=\"storyboardSlug\">URL</label>\n" +
     "            <div class=\"col-sm-9\">\n" +
-    "                <input type=\"text\" class=\"form-control\" id=\"storyboardSlug\" name=\"storyboardSlug\" ng-model=\"newStoryboard.slug\" required ui-keypress=\"{13:'add()'}\" />\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"storyboardSlug\" name=\"storyboardSlug\" ng-model=\"newStoryboard.slug\" required ui-keypress=\"{13:'add(newStoryboard, auth.user.uid)'}\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </form>\n" +
