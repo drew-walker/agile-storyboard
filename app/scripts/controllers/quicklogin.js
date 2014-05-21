@@ -47,23 +47,23 @@ angular.module('getAgileApp')
             });
         };
 
-        $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
+        $rootScope.$on('$firebaseSimpleLogin:login', function(e, user) {
             switch (user.provider) {
-                case "twitter":
+                case 'twitter':
                     $scope.profileImageUrl = user.profile_image_url;
                     $scope.userName = user.name;
                     break;
-                case "facebook":
-                    $scope.profileImageUrl = "http://graph.facebook.com/" + user.username + "/picture";
+                case 'facebook':
+                    $scope.profileImageUrl = 'http://graph.facebook.com/' + user.username + '/picture';
                     $scope.userName = user.name;
                     break;
-                case "password":
+                case 'password':
                     $scope.profileImageUrl = null;
                     var userRef = syncData('users/' + user.uid);
-                    userRef.$on("loaded", function() {
+                    userRef.$on('loaded', function() {
                         $scope.userName = userRef.name;
                     });
-                    userRef.$on("change", function() {
+                    userRef.$on('change', function() {
                         $scope.userName = userRef.name;
                     });
                     break;

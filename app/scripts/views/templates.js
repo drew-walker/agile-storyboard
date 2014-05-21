@@ -79,7 +79,7 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "        <div class=\"form-group\">\n" +
     "            <label class=\"control-label col-sm-3\" for=\"storyboardSlug\">URL</label>\n" +
     "            <div class=\"col-sm-9\">\n" +
-    "                <input type=\"text\" class=\"form-control\" id=\"storyboardSlug\" name=\"storyboardSlug\" ng-model=\"newStoryboard.slug\" required focus ui-keypress=\"{13:'add()'}\" />\n" +
+    "                <input type=\"text\" class=\"form-control\" id=\"storyboardSlug\" name=\"storyboardSlug\" ng-model=\"newStoryboard.slug\" required ui-keypress=\"{13:'add()'}\" />\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </form>\n" +
@@ -111,7 +111,7 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "                    <div class=\"col-md-6\" ng-controller=\"TeamCtrl\">\n" +
     "                        <form class=\"form-inline pull-left\">\n" +
     "                            <div class=\"form-group\">\n" +
-    "                                <input type=\"text\" class=\"form-control input-sm\" ng-model=\"newTeamMemberUserId\" typeahead-on-select=\"addPersonToTeam()\" typeahead=\"person.$id as person.name for person in userList | orderByPriority | filter:$viewValue\" placeholder=\"Add Team Member\" />\n" +
+    "                                <input type=\"text\" class=\"form-control input-sm\" ng-model=\"newTeamMemberUserId\" typeahead-on-select=\"addPersonToTeam(newTeamMemberUserId)\" typeahead=\"person.$id as person.name for person in userList | orderByPriority | filter:$viewValue\" placeholder=\"Add Team Member\" />\n" +
     "                            </div>\n" +
     "                            <div class=\"btn-group btn-group-sm\">\n" +
     "                                <button ng-repeat=\"person in team\" class=\"btn btn-default\" ng-click=\"removePersonFromTeam(person.$id)\">{{person.name}} <span class=\"glyphicon glyphicon-remove\"></span></button>\n" +
@@ -244,6 +244,11 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
     "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
     "</div>"
+  );
+
+
+  $templateCache.put('views/home.html',
+    "<p>This is the home views.</p>"
   );
 
 

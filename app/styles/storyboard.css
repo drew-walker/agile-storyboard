@@ -18,6 +18,8 @@ body {
     color:#999;
 }
 
+/*.navbar-brand { background:url("/images/logo.png") no-repeat left center; background-size:50px 50px; padding-left:60px; }*/
+
 .row > div.over {
     background-color:#f7ecb5;
 }

@@ -8,7 +8,6 @@ angular.module('getAgileApp')
             },
             addStory: function(boardId, story) {
                 var column = ColumnService.getFirstColumn(boardId);
-                var boardId = boardId;
 
                 column.$on('loaded', function() {
                     var columnId = column.$getIndex(0)[0];
@@ -31,32 +30,26 @@ angular.module('getAgileApp')
             progressStory: function(boardId, columnId, storyId) {
                 var self = this;
                 var nextColumn = ColumnService.getNextColumn(boardId, columnId);
-                var boardId = boardId;
-                var columnId = columnId;
-                var storyId = storyId;
 
                 nextColumn.$on('loaded', function() {
                     var nextColumnId = nextColumn.$getIndex()[1];
                     var story = self.getStory(boardId, storyId);
                     story.$on('loaded', function() {
                         var ref = firebaseRef('stories/' + boardId + '/' + storyId);
-                        ref.update({ "columnId" : nextColumnId });
+                        ref.update({ 'columnId' : nextColumnId });
                     });
                 });
             },
             regressStory: function(boardId, columnId, storyId) {
                 var self = this;
                 var previousColumn = ColumnService.getPreviousColumn(boardId, columnId);
-                var boardId = boardId;
-                var columnId = columnId;
-                var storyId = storyId;
 
                 previousColumn.$on('loaded', function() {
                     var previousColumnId = previousColumn.$getIndex()[0];
                     var story = self.getStory(boardId, storyId);
                     story.$on('loaded', function() {
                         var ref = firebaseRef('stories/' + boardId + '/' + storyId);
-                        ref.update({ "columnId" : previousColumnId });
+                        ref.update({ 'columnId' : previousColumnId });
                     });
                 });
             }

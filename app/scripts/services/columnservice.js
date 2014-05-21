@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('getAgileApp')
-  .factory('ColumnService', function ($firebase, firebaseRef, syncData, FBURL) {
+    .factory('ColumnService', function ($firebase, firebaseRef, syncData, FBURL) {
         return {
             getDefaultColumns: function() {
                 return [
-                    { "name" : 'Backlog', stories : [] },
-                    { "name" : 'In Design', stories : [] },
-                    { "name" : 'In Development', stories : [] },
-                    { "name" : 'Ready for Test', stories : [] }
+                    { 'name' : 'Backlog', stories : [] },
+                    { 'name' : 'In Design', stories : [] },
+                    { 'name' : 'In Development', stories : [] },
+                    { 'name' : 'Ready for Test', stories : [] }
                 ];
             },
             getColumns: function(boardId) {
@@ -45,5 +45,5 @@ angular.module('getAgileApp')
                 var ref = new Firebase(FBURL + '/columns/' + boardId);
                 return $firebase(ref.endAt(null, columnId).limit(2));
             }
-        }
-  });
+        };
+    });

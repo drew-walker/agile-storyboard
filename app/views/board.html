@@ -6,7 +6,7 @@
                     <div class="col-md-6" ng-controller="TeamCtrl">
                         <form class="form-inline pull-left">
                             <div class="form-group">
-                                <input type="text" class="form-control input-sm" ng-model="newTeamMemberUserId" typeahead-on-select="addPersonToTeam()" typeahead="person.$id as person.name for person in userList | orderByPriority | filter:$viewValue" placeholder="Add Team Member" />
+                                <input type="text" class="form-control input-sm" ng-model="newTeamMemberUserId" typeahead-on-select="addPersonToTeam(newTeamMemberUserId)" typeahead="person.$id as person.name for person in userList | orderByPriority | filter:$viewValue" placeholder="Add Team Member" />
                             </div>
                             <div class="btn-group btn-group-sm">
                                 <button ng-repeat="person in team" class="btn btn-default" ng-click="removePersonFromTeam(person.$id)">{{person.name}} <span class="glyphicon glyphicon-remove"></span></button>

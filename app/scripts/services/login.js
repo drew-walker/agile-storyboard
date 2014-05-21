@@ -1,12 +1,17 @@
 'use strict';
 
 angular.module('getAgileApp')
-    .factory('loginService', function ($firebaseSimpleLogin, firebaseRef, syncData, profileCreator, $log) {
+    .factory('loginService', function ($firebaseSimpleLogin, firebaseRef, syncData, profileCreator) {
         var auth = null;
+
+        function assertAuth() {
+            if (auth === null) { throw new Error('Must call loginService.init() before using its methods'); }
+        }
 
         return {
             init: function () {
-                return auth = $firebaseSimpleLogin(firebaseRef());
+                auth = $firebaseSimpleLogin(firebaseRef());
+                return auth;
             },
 
             auth: function() {
@@ -31,7 +36,7 @@ angular.module('getAgileApp')
                 auth.$login('facebook').then(function(user) {
                     firebaseRef('users/' + user.uid).once('value', function(profile) {
                         if (!profile.val()) {
-                            profileCreator(user.uid, "");
+                            profileCreator(user.uid, '');
                         }
                     });
                 });
@@ -49,10 +54,6 @@ angular.module('getAgileApp')
 
             createProfile: profileCreator
         };
-
-        function assertAuth() {
-            if (auth === null) { throw new Error('Must call loginService.init() before using its methods'); }
-        }
     })
     .factory('profileCreator', function(firebaseRef, $timeout) {
         return function(id, email, callback) {
@@ -61,7 +62,7 @@ angular.module('getAgileApp')
                 if (callback) {
                     $timeout(function() {
                         callback(err);
-                    })
+                    });
                 }
             });
         };

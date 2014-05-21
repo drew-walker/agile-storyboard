@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('getAgileApp')
-  .factory('BoardService', function (firebaseRef, syncData, ColumnService, $q, $filter) {
+    .factory('BoardService', function (firebaseRef, syncData, ColumnService, $q, $filter, IndexService) {
         var boardsReference = firebaseRef('boards');
         var defaultColumns = ColumnService.getDefaultColumns();
         return {
@@ -11,7 +11,7 @@ angular.module('getAgileApp')
             getBoardIdFromSlug: function(slug) {
                 var deferred = $q.defer();
                 var data = firebaseRef('boards');
-                var idFound = false
+                var idFound = false;
                 data.on('child_added', function(snapshot) {
                     if (snapshot.val().slug === slug) {
                         idFound = true;
@@ -37,9 +37,19 @@ angular.module('getAgileApp')
                 return syncData('boards', 1);
             },
             deleteBoard: function(boardId) {
+                syncData('boards/' + boardId).$remove();
+                ColumnService.deleteColumns(boardId);
+            },
+            archiveBoard: function(boardId) {
                 syncData('boards/' + boardId + '/archived').$set(1);
-//                syncData('boards/' + boardId).$remove();
-//                ColumnService.deleteColumns(boardId);
+            },
+            addUserToBoard: function(boardId, userId) {
+                IndexService.addUserToIndexForBoardTeam(boardId, userId);
+                IndexService.addBoardToIndexForUser(boardId, userId);
+            },
+            removeUserFromBoard: function(boardId, userId) {
+                IndexService.removeUserFromIndexForBoardTeam(boardId, userId);
+                IndexService.removeBoardFromIndexForUser(boardId, userId);
             }
-        }
-  });
+        };
+    });
