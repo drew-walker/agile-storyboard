@@ -86,7 +86,7 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
     "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
-    "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"add()\">Add</button>\n" +
+    "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"add(newStoryboard, auth.user.uid)\">Add</button>\n" +
     "</div>"
   );
 
