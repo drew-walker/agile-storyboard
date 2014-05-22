@@ -17,9 +17,6 @@ angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.fireba
         }).when('/releases/:boardSlug', {
             templateUrl: 'views/releases.html',
             controller: 'ReleaseCtrl'
-        }).when('/dashboard', {
-            templateUrl: 'views/dashboard.html',
-            controller: 'DashboardCtrl'
         }).when('/release-notes', {
             templateUrl: 'views/release-notes.html',
             controller: 'ReleaseNotesCtrl'

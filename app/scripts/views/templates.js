@@ -199,11 +199,6 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
   );
 
 
-  $templateCache.put('views/dashboard.html',
-    "<p>This is the dashboard view.</p>\n"
-  );
-
-
   $templateCache.put('views/dragAndDropFileUpload.html',
     "<div class=\"row\">\n" +
     "    <div class=\"col-md-12\">\n" +

@@ -26,19 +26,19 @@
             </div>
             <div class="collapse navbar-collapse" id="collapse-1">
                 <ul ng-show="userIsLoggedIn" class="nav navbar-nav">
-                    <li><a href="#/dashboard">Dashboard</a></li>
                     <li>
-                        <a href="" ng-cloak class="dropdown-toggle" data-toggle="dropdown"><strong>Board</strong><span ng-show="selectedBoard">: {{selectedBoard.name}}</span> <b class="caret"></b></a>
+                        <a href="" ng-cloak class="dropdown-toggle" data-toggle="dropdown"><strong ng-hide="selectedBoard">Select a Board</strong><strong ng-show="selectedBoard">{{selectedBoard.name}}</strong> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{board.slug}}"><span ng-show="key==selectedBoardId" class="glyphicon glyphicon-ok"></span> {{board.name}}</a></li>
+                            <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{board.slug}}"><span ng-show="key==selectedBoardId" class="glyphicon glyphicon-ok"></span> {{board.name}} </a></li>
                             <li role="presentation" class="divider"></li>
                             <li ng-class="{ 'disabled' : !userIsLoggedIn }"><a href="" ng-click="showNewStoryboardUI()">Add New Storyboard</a></li>
                         </ul>
                     </li>
+                    <li ng-show="selectedBoard"><a href="#">Configure Board</a></li>
                 </ul>
-                <div ng-show="userIsLoggedIn" class="navbar-header pull-left">
-                    <button ng-show="selectedBoard && userIsLoggedIn" class="btn btn-danger navbar-btn hidden-xs" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
-                </div>
+                <!--<div ng-show="selectedBoard && userIsLoggedIn" class="navbar-header pull-left">-->
+                    <!--<button class="btn btn-danger navbar-btn hidden-xs" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>-->
+                <!--</div>-->
                 <ul class="nav navbar-nav visible-xs">
                     <li>
                         <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{key}}"><span ng-show="key==selectedBoardId" class="glyphicon glyphicon-ok"></span> {{board.name}}</a></li>
@@ -54,7 +54,7 @@
                         <li ng-show="auth.user">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown">{{userName}} <span class="glyphicon glyphicon-user"></span> <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#/profile/{{auth.user.uid}}">Profile</a></li>
+                                <li><a href="#/profile/{{auth.user.uid}}">My Profile</a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li><a href="" ng-click="logout()">Logout</a></li>
                             </ul>
