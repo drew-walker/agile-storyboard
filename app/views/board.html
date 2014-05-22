@@ -63,6 +63,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="progress">
+                            <div popover-placement="top" popover="{{story.summary}}" popover-trigger="mouseenter" class="progress-bar" ng-class="{ 'progress-bar-warning' : $index % 4 == 0, 'progress-bar-danger' : $index % 4 == 1, 'progress-bar-success' : $index % 4 == 2, 'progress-bar-info' : $index % 4 == 3 }" style="width: {{story.estimate / storyPoints * 100}}%" ng-repeat="story in stories">
+                                <span class="sr-only">35% Complete (success)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

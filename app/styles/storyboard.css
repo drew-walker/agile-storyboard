@@ -18,6 +18,7 @@ body {
     color:#999;
 }
 
+.navbar { border-bottom:1px solid #ccc; background:#efefef; }
 /*.navbar-brand { background:url("/images/logo.png") no-repeat left center; background-size:50px 50px; padding-left:60px; }*/
 
 .row > div.over {

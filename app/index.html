@@ -13,7 +13,7 @@
     <!-- endbuild -->
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <nav class="navbar navbar-static-top" role="navigation">
         <div style="padding:0 15px" ng-controller="NavigationCtrl">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse-1">
@@ -22,7 +22,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#/release-notes">GetAgile</a>
+                <a class="navbar-brand" href="#/home">GetAgile</a>
             </div>
             <div class="collapse navbar-collapse" id="collapse-1">
                 <ul ng-show="userIsLoggedIn" class="nav navbar-nav">
@@ -144,6 +144,7 @@
     <script src="scripts/directives/DragAndDropFileUpload.js"></script>
     <script src="scripts/controllers/home.js"></script>
     <script src="scripts/services/indexservice.js"></script>
+    <script src="scripts/controllers/Release.js"></script>
     <!-- endbuild -->
 </body>
 </html>

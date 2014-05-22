@@ -2,8 +2,15 @@
 
 angular.module('getAgileApp')
     .controller('BoardCtrl', function ($scope, $rootScope, $modal, syncData, firebaseRef, BoardService, ColumnService, StoryService, $routeParams, $firebase, $filter, $sce, $window) {
-
         $scope.selectedBoardId = null;
+
+        var sumStoryPoints = function(stories) {
+            var storyPoints = 0;
+            angular.forEach(stories, function(story) {
+                storyPoints += Number(story.estimate);
+            });
+            return storyPoints;
+        }
         $scope.loadBoard = function(boardId) {
             $scope.selectedBoardId = boardId;
             $scope.columns = {};
@@ -15,16 +22,17 @@ angular.module('getAgileApp')
             });
 
             var stories = syncData('stories/' + $scope.selectedBoardId);
-            stories.$on('loaded', function() {
+            stories.$on('loaded', function(storySnapshot) {
                 $scope.stories = stories;
+                $scope.storyPoints = sumStoryPoints(storySnapshot);
             });
 
-            $scope.adminsIndex = new FirebaseIndex(firebaseRef('admins/' + $scope.selectedBoardId), firebaseRef('users/'));
-
-            $scope.adminsIndex.on('child_added', function(snapshot) {
-                var admin = snapshot.val();
-                $scope.admin = admin;
-            });
+//            $scope.adminsIndex = new FirebaseIndex(firebaseRef('admins/' + $scope.selectedBoardId), firebaseRef('users/'));
+//
+//            $scope.adminsIndex.on('child_added', function(snapshot) {
+//                var admin = snapshot.val();
+//                $scope.admin = admin;
+//            });
 
             var columns = syncData('columns/' + $scope.selectedBoardId);
 

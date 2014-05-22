@@ -168,6 +168,15 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "                        </div>\n" +
     "                    </div>\n" +
     "                </div>\n" +
+    "                <div class=\"row\">\n" +
+    "                    <div class=\"col-md-12\">\n" +
+    "                        <div class=\"progress\">\n" +
+    "                            <div popover-placement=\"top\" popover=\"{{story.summary}}\" popover-trigger=\"mouseenter\" class=\"progress-bar\" ng-class=\"{ 'progress-bar-warning' : $index % 4 == 0, 'progress-bar-danger' : $index % 4 == 1, 'progress-bar-success' : $index % 4 == 2, 'progress-bar-info' : $index % 4 == 3 }\" style=\"width: {{story.estimate / storyPoints * 100}}%\" ng-repeat=\"story in stories\">\n" +
+    "                                <span class=\"sr-only\">35% Complete (success)</span>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -354,6 +363,13 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "    <h3>Known Issues</h3>\n" +
     "    <p>There are no known issues at this time.</p>\n" +
     "</div>\n"
+  );
+
+
+  $templateCache.put('views/releases.html',
+    "<ul>\n" +
+    "    <li ng-repeat=\"release in releases\" ng-bind=\"release\"></li>\n" +
+    "</ul>"
   );
 
 }]);
