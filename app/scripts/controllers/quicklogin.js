@@ -29,7 +29,7 @@ angular.module('getAgileApp')
 
         $scope.logout = function() {
             loginService.logout();
-            $location.path('/login');
+            $location.path('/home');
         };
 
         $scope.createAccount = function() {
