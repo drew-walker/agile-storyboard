@@ -3,31 +3,33 @@
         <div class="col-sm-12"><img src="images/hero.png" style="max-width:100%;" /></div>
     </div>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="well" style="min-height:300px">
-                <p>Create New Board</p>
-                <form class="form-horizontal" role="form" name="AddStoryboardForm">
-                    <div class="form-group" ng-class="{ 'has-error' : AddStoryboardForm.storyboardName.$invalid }">
-                        <label class="control-label col-sm-3" for="storyboardName">Name</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="storyboardName" name="storyboardName" ng-model="newStoryboard.name" required ui-keypress="{13:'add(newStoryboard, auth.user.uid)'}" />
+<div class="container-fluid" style="background-color:#efefef; padding-top:20px; border-top:1px solid #ccc">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="well" style="min-height:300px">
+                    <p>Create New Board</p>
+                    <form class="form-horizontal" role="form" name="AddStoryboardForm">
+                        <div class="form-group" ng-class="{ 'has-error' : AddStoryboardForm.storyboardName.$invalid }">
+                            <label class="control-label col-sm-3" for="storyboardName">Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="storyboardName" name="storyboardName" ng-model="newStoryboard.name" required ui-keypress="{13:'add(newStoryboard, auth.user.uid)'}" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" for="storyboardSlug">URL</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="storyboardSlug" name="storyboardSlug" ng-model="newStoryboard.slug" required ui-keypress="{13:'add(newStoryboard, auth.user.uid)'}" />
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="storyboardSlug">URL</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="storyboardSlug" name="storyboardSlug" ng-model="newStoryboard.slug" required ui-keypress="{13:'add(newStoryboard, auth.user.uid)'}" />
+                            </div>
                         </div>
-                    </div>
-                </form>
-                <button type="button" class="btn btn-primary pull-right" ng-click="add(newStoryboard, auth.user.uid)">Add</button>
+                    </form>
+                    <button type="button" class="btn btn-primary pull-right" ng-click="add(newStoryboard, auth.user.uid)">Add</button>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-4" ng-repeat="board in boards">
-            <div class="well" style="min-height:300px">
-                <a href="#/boards/{{board.slug}}">{{board.name}}</a>
+            <div class="col-sm-4" ng-repeat="board in boards">
+                <div class="well" style="min-height:300px">
+                    <a href="#/boards/{{board.slug}}">{{board.name}}</a>
+                </div>
             </div>
         </div>
     </div>

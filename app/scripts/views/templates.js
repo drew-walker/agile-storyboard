@@ -102,6 +102,13 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
   );
 
 
+  $templateCache.put('views/board-settings.html',
+    "<div class=\"navbar-header pull-left\"><!-- ng-show=\"selectedBoard && userIsLoggedIn\" -->\n" +
+    "    <button class=\"btn btn-danger navbar-btn hidden-xs\" ng-click=\"deleteStoryboard()\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</button>\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('views/board.html',
     "<div style=\"padding:0 15px;\">\n" +
     "    <div class=\"row\">\n" +
@@ -257,31 +264,33 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "        <div class=\"col-sm-12\"><img src=\"images/hero.png\" style=\"max-width:100%;\" /></div>\n" +
     "    </div>\n" +
     "</div>\n" +
-    "<div class=\"container\">\n" +
-    "    <div class=\"row\">\n" +
-    "        <div class=\"col-sm-4\">\n" +
-    "            <div class=\"well\" style=\"min-height:300px\">\n" +
-    "                <p>Create New Board</p>\n" +
-    "                <form class=\"form-horizontal\" role=\"form\" name=\"AddStoryboardForm\">\n" +
-    "                    <div class=\"form-group\" ng-class=\"{ 'has-error' : AddStoryboardForm.storyboardName.$invalid }\">\n" +
-    "                        <label class=\"control-label col-sm-3\" for=\"storyboardName\">Name</label>\n" +
-    "                        <div class=\"col-sm-9\">\n" +
-    "                            <input type=\"text\" class=\"form-control\" id=\"storyboardName\" name=\"storyboardName\" ng-model=\"newStoryboard.name\" required ui-keypress=\"{13:'add(newStoryboard, auth.user.uid)'}\" />\n" +
+    "<div class=\"container-fluid\" style=\"background-color:#efefef; padding-top:20px; border-top:1px solid #ccc\">\n" +
+    "    <div class=\"container\">\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-sm-4\">\n" +
+    "                <div class=\"well\" style=\"min-height:300px\">\n" +
+    "                    <p>Create New Board</p>\n" +
+    "                    <form class=\"form-horizontal\" role=\"form\" name=\"AddStoryboardForm\">\n" +
+    "                        <div class=\"form-group\" ng-class=\"{ 'has-error' : AddStoryboardForm.storyboardName.$invalid }\">\n" +
+    "                            <label class=\"control-label col-sm-3\" for=\"storyboardName\">Name</label>\n" +
+    "                            <div class=\"col-sm-9\">\n" +
+    "                                <input type=\"text\" class=\"form-control\" id=\"storyboardName\" name=\"storyboardName\" ng-model=\"newStoryboard.name\" required ui-keypress=\"{13:'add(newStoryboard, auth.user.uid)'}\" />\n" +
+    "                            </div>\n" +
     "                        </div>\n" +
-    "                    </div>\n" +
-    "                    <div class=\"form-group\">\n" +
-    "                        <label class=\"control-label col-sm-3\" for=\"storyboardSlug\">URL</label>\n" +
-    "                        <div class=\"col-sm-9\">\n" +
-    "                            <input type=\"text\" class=\"form-control\" id=\"storyboardSlug\" name=\"storyboardSlug\" ng-model=\"newStoryboard.slug\" required ui-keypress=\"{13:'add(newStoryboard, auth.user.uid)'}\" />\n" +
+    "                        <div class=\"form-group\">\n" +
+    "                            <label class=\"control-label col-sm-3\" for=\"storyboardSlug\">URL</label>\n" +
+    "                            <div class=\"col-sm-9\">\n" +
+    "                                <input type=\"text\" class=\"form-control\" id=\"storyboardSlug\" name=\"storyboardSlug\" ng-model=\"newStoryboard.slug\" required ui-keypress=\"{13:'add(newStoryboard, auth.user.uid)'}\" />\n" +
+    "                            </div>\n" +
     "                        </div>\n" +
-    "                    </div>\n" +
-    "                </form>\n" +
-    "                <button type=\"button\" class=\"btn btn-primary pull-right\" ng-click=\"add(newStoryboard, auth.user.uid)\">Add</button>\n" +
+    "                    </form>\n" +
+    "                    <button type=\"button\" class=\"btn btn-primary pull-right\" ng-click=\"add(newStoryboard, auth.user.uid)\">Add</button>\n" +
+    "                </div>\n" +
     "            </div>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-sm-4\" ng-repeat=\"board in boards\">\n" +
-    "            <div class=\"well\" style=\"min-height:300px\">\n" +
-    "                <a href=\"#/boards/{{board.slug}}\">{{board.name}}</a>\n" +
+    "            <div class=\"col-sm-4\" ng-repeat=\"board in boards\">\n" +
+    "                <div class=\"well\" style=\"min-height:300px\">\n" +
+    "                    <a href=\"#/boards/{{board.slug}}\">{{board.name}}</a>\n" +
+    "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +

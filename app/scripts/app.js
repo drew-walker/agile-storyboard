@@ -14,6 +14,9 @@ angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.fireba
         }).when('/boards/:boardSlug', {
             templateUrl: 'views/board.html',
             controller: 'BoardCtrl'
+        }).when('/boards/:boardSlug/settings', {
+            templateUrl: 'views/board-settings.html',
+            controller: 'BoardSettingsCtrl'
         }).when('/releases/:boardSlug', {
             templateUrl: 'views/releases.html',
             controller: 'ReleaseCtrl'

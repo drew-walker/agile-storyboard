@@ -34,11 +34,8 @@
                             <li ng-class="{ 'disabled' : !userIsLoggedIn }"><a href="" ng-click="showNewStoryboardUI()">Add New Storyboard</a></li>
                         </ul>
                     </li>
-                    <li ng-show="selectedBoard" ng-cloak><a href="#">Configure Board</a></li>
+                    <li ng-show="selectedBoard" ng-cloak><a href="#/boards/{{selectedBoard.slug}}/settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
                 </ul>
-                <!--<div ng-show="selectedBoard && userIsLoggedIn" class="navbar-header pull-left">-->
-                    <!--<button class="btn btn-danger navbar-btn hidden-xs" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>-->
-                <!--</div>-->
                 <ul class="nav navbar-nav visible-xs">
                     <li>
                         <li ng-repeat="(key, board) in boards"><a ng-href="#/boards/{{key}}"><span ng-show="key==selectedBoardId" class="glyphicon glyphicon-ok"></span> {{board.name}}</a></li>
@@ -91,7 +88,7 @@
                     <!--</form>-->
                 <!--</div>-->
 
-                <!--&lt;!&ndash;<p>The admin of this board is {{admin.name}}.</p>&ndash;&gt;-->
+                <!--<!--<p>The admin of this board is {{admin.name}}.</p>-->
             <!--</div>-->
         <!--</div>-->
     <!--</div>-->
@@ -117,6 +114,7 @@
     <script src="scripts/config.js"></script>
     <script src="scripts/views/templates.js"></script>
     <script src="scripts/controllers/board.js"></script>
+    <script src="scripts/controllers/board-settings.js"></script>
     <script src="scripts/directives/draggable.js"></script>
     <script src="scripts/directives/droppable.js"></script>
     <script src="scripts/directives/board.js"></script>
