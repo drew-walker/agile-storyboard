@@ -30,7 +30,7 @@ angular.module('getAgileApp', ['getAgileApp.config', 'getAgileApp.service.fireba
             templateUrl: 'views/home.html',
             controller: 'HomeCtrl'
         }).otherwise({
-            redirectTo: '/login'
+            redirectTo: '/home'
         });
 
     })

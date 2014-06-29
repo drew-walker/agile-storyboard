@@ -22,7 +22,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#/home">GetAgile</a>
+                <a class="navbar-brand" href="#/home">GetAgile ALPHA</a>
             </div>
             <div class="collapse navbar-collapse" id="collapse-1">
                 <ul ng-show="userIsLoggedIn" class="nav navbar-nav">
@@ -34,7 +34,7 @@
                             <li ng-class="{ 'disabled' : !userIsLoggedIn }"><a href="" ng-click="showNewStoryboardUI()">Add New Storyboard</a></li>
                         </ul>
                     </li>
-                    <li ng-show="selectedBoard"><a href="#">Configure Board</a></li>
+                    <li ng-show="selectedBoard" ng-cloak><a href="#">Configure Board</a></li>
                 </ul>
                 <!--<div ng-show="selectedBoard && userIsLoggedIn" class="navbar-header pull-left">-->
                     <!--<button class="btn btn-danger navbar-btn hidden-xs" ng-click="deleteStoryboard()"><span class="glyphicon glyphicon-trash"></span> Delete</button>-->
@@ -105,7 +105,7 @@
     <script src="bower_components/firebase-simple-login/firebase-simple-login.js"></script>
     <script src="bower_components/angularfire/angularfire.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
