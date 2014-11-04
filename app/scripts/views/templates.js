@@ -175,15 +175,15 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
     "                        </div>\n" +
     "                    </div>\n" +
     "                </div>\n" +
-    "                <div class=\"row\">\n" +
-    "                    <div class=\"col-md-12\">\n" +
-    "                        <div class=\"progress\">\n" +
-    "                            <div popover-placement=\"top\" popover=\"{{story.summary}}\" popover-trigger=\"mouseenter\" class=\"progress-bar\" ng-class=\"{ 'progress-bar-warning' : $index % 4 == 0, 'progress-bar-danger' : $index % 4 == 1, 'progress-bar-success' : $index % 4 == 2, 'progress-bar-info' : $index % 4 == 3 }\" style=\"width: {{story.estimate / storyPoints * 100}}%\" ng-repeat=\"story in stories\">\n" +
-    "                                <span class=\"sr-only\">35% Complete (success)</span>\n" +
-    "                            </div>\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
+    "                <!--<div class=\"row\">-->\n" +
+    "                    <!--<div class=\"col-md-12\">-->\n" +
+    "                        <!--<div class=\"progress\">-->\n" +
+    "                            <!--<div popover-placement=\"top\" popover=\"{{story.summary}}\" popover-trigger=\"mouseenter\" class=\"progress-bar\" ng-class=\"{ 'progress-bar-warning' : $index % 4 == 0, 'progress-bar-danger' : $index % 4 == 1, 'progress-bar-success' : $index % 4 == 2, 'progress-bar-info' : $index % 4 == 3 }\" style=\"width: {{story.estimate / storyPoints * 100}}%\" ng-repeat=\"story in stories\">-->\n" +
+    "                                <!--<span class=\"sr-only\">35% Complete (success)</span>-->\n" +
+    "                            <!--</div>-->\n" +
+    "                        <!--</div>-->\n" +
+    "                    <!--</div>-->\n" +
+    "                <!--</div>-->\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -259,12 +259,7 @@ angular.module('getAgileApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/home.html',
-    "<div class=\"container\">\n" +
-    "    <div class=\"row\">\n" +
-    "        <div class=\"col-sm-12\"><img src=\"images/hero.png\" style=\"max-width:100%;\" /></div>\n" +
-    "    </div>\n" +
-    "</div>\n" +
-    "<div class=\"container-fluid\" style=\"background-color:#efefef; padding-top:20px; border-top:1px solid #ccc\">\n" +
+    "<div class=\"container-fluid\">\n" +
     "    <div class=\"container\">\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"col-sm-4\">\n" +
